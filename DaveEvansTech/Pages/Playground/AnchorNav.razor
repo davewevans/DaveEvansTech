@@ -1,0 +1,39 @@
+﻿@page "/AnchorNav"
+@using DaveEvansTech.Components.Utilities
+@inject NavigationManager NavigationManager
+
+<h3>AnchorNav</h3>
+
+<strong>Table of Contents</strong>
+<ul>
+    @for (int i = 0; i < 10; i++)
+    {
+        <li><a href="@GetHref(i)">Header @i</a></li>
+    }
+</ul>
+
+@for (int i = 0; i < 10; i++)
+{
+    <h1 id="@GetId(i)">Header @i</h1>
+    @LoremNET.Lorem.Paragraph(wordCount: 30, sentenceCount: 10)
+    <br/><br/>
+}
+
+@* 👇 Integrate the component *@
+<AnchorNavigation />
+
+
+@code {
+    string _baseRelativePath = "";
+    
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(NavigationManager.Uri, UriKind.Absolute);
+        _baseRelativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+    }
+    
+    string GetId(int i) => "header-" + i;
+    string GetHref(int i) => $"{_baseRelativePath}#{GetId(i)}";
+
+}
+

@@ -1,0 +1,44 @@
+﻿/* #Mega Menu Styles
+ –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.mega-menu {
+    display: none;
+    left: 0;
+    position: absolute;
+    text-align: left;
+    width: 100%;
+}
+
+/* #Mega Menu Styles
+ –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.drop-down-menu {
+    display: none;    
+    position: absolute;
+    text-align: left;
+    width: 100%;
+}
+
+
+
+/* #hoverable Class Styles
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.hoverable {
+    position: static;
+    z-index: 999;
+}
+
+.hoverable > a:after {
+    content: "\25BC";
+    font-size: 10px;
+    padding-left: 6px;
+    position: relative;
+    top: -1px;
+}
+
+.hoverable:hover .mega-menu {
+    display: block;
+}
+
+.hoverable:hover .drop-down-menu {
+    display: block;
+}
+

@@ -1,0 +1,342 @@
+﻿@using DaveEvansTech.Models
+@using DaveEvansTech.Contracts
+@using DaveEvansTech.Components.UIComponents
+
+
+@inject IRepository Repository
+
+<h2 class="text-2xl text-primary text-center">Preview and Send</h2>
+
+
+<div class="sm:mx-auto lg:ml-56 lg:mr-56 2xl:ml-72 2xl:mr-72">
+    <div class="container w-full flex-col flex-wrap mx-auto px-16 lg:pt-12 mt-12 bg-gray-100">
+
+        <div class="mb-4">
+            @($"{DateTime.Now:D}")
+        </div>
+
+        <div class="flex flex-row justify-between">
+            <h2 class="text-2xl">Project Brief</h2>
+            <button type="button" @onclick="Cancel">
+                <i class="fa fa-times-circle text-2xl text-red-700"></i>
+            </button>
+        </div>
+
+
+        <div>
+            <div class="font-sans font-semibold text-gray-600 text-sm px-2 mb-6">
+                <div>@Brief.CompanyName</div>
+            </div>
+
+            <div class="font-sans font-semibold text-gray-600 text-sm mb-6 px-2 flex flex-row space-x-1">
+                <div>@Brief.FirstName</div>
+                <div>@Brief.LastName</div>
+            </div>
+
+
+            <div class="font-sans font-semibold text-gray-600 text-sm px-2 mb-6">
+                <div>@Brief.Email</div>
+            </div>
+
+            <div class="font-sans font-semibold text-gray-600 text-sm px-2 mb-6">
+                <div>@Brief.Phone</div>
+            </div>
+
+            @*@if (!string.IsNullOrWhiteSpace(Client.ApplicationUser?.FirstName))
+                {
+                    <div class="font-sans font-semibold text-gray-600 text-sm mt-6 px-2 flex flex-row space-x-1">
+                        <div>@Client.ApplicationUser?.FirstName</div>
+                        <div>@Client.ApplicationUser?.LastName</div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Client.CompanyName))
+                {
+                    <div class="font-sans font-semibold text-gray-600 text-sm px-2">
+                        <div>@Client.CompanyName</div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Client.ApplicationUser?.Email))
+                {
+                    <div class="font-sans font-semibold text-gray-600 text-sm px-2 mt-2">
+                        <div>@Client.ApplicationUser?.Email</div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Client.ApplicationUser?.PhoneNumber))
+                {
+                    <div class="font-sans font-semibold text-gray-600 text-sm px-2 mt-2">
+                        <div>@Client.ApplicationUser?.PhoneNumber</div>
+                    </div>
+                }*@
+        </div>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        @if (!string.IsNullOrWhiteSpace(Brief.ProjectSummary))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Project Summary</h2>
+                <MarkupHtml HtmlString="@Brief.ProjectSummary" />
+
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+
+        @if (!string.IsNullOrWhiteSpace(Brief.AboutCompany))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">About Company/Organization</h2>
+                <MarkupHtml HtmlString="@Brief.AboutCompany" />
+
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.TargetAudience))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Target Audience</h2>
+                <MarkupHtml HtmlString="@Brief.TargetAudience" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.Goals))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Goals</h2>
+                <MarkupHtml HtmlString="@Brief.Goals" />
+
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.Competitors))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Competitors</h2>
+                <MarkupHtml HtmlString="@Brief.Competitors" />
+
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.LookAndFeel))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Look & Feel</h2>
+                <MarkupHtml HtmlString="@Brief.LookAndFeel" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.LogoDesign))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Logo Design</h2>
+                <MarkupHtml HtmlString="@Brief.LogoDesign" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+
+        @if (!string.IsNullOrWhiteSpace(Brief.Features))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Features</h2>
+                <MarkupHtml HtmlString="@Brief.Features" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.Content))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Content</h2>
+                <MarkupHtml HtmlString="@Brief.Content" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.InHouseRequirements))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">In-house Requirements</h2>
+                <MarkupHtml HtmlString="@Brief.InHouseRequirements" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.Hosting))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Hosting</h2>
+                <MarkupHtml HtmlString="@Brief.Hosting" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.OnGoingSupport))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">On-going Support</h2>
+                <MarkupHtml HtmlString="@Brief.OnGoingSupport" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.TargetPlatforms))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Target Platforms</h2>
+                <MarkupHtml HtmlString="@Brief.TargetPlatforms" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.DatabaseIntegration))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Database Integration</h2>
+                <MarkupHtml HtmlString="@Brief.DatabaseIntegration" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.BackendDevelopment))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Backend Development</h2>
+                <MarkupHtml HtmlString="@Brief.BackendDevelopment" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.OnlineMarketing))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Online Marketing</h2>
+                <MarkupHtml HtmlString="@Brief.OnlineMarketing" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (Brief.Deadline != null)
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Deadline</h2>
+                Deadline: @($"{Brief.Deadline:d}")
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.MeasuringSuccess))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Measuring Success</h2>
+                <MarkupHtml HtmlString="@Brief.MeasuringSuccess" />
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Brief.BudgetMinimum) && !string.IsNullOrWhiteSpace(Brief.BudgetMaximum))
+        {
+            <div class="mt-6 mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Budget</h2>
+                Budget: @($"${Brief.BudgetMinimum} - ${Brief.BudgetMaximum}")
+                <!--divider-->
+                <hr class="bg-gray-300 my-12">
+            </div>
+        }
+
+
+
+        @if (_files != null && _files.Count > 0)
+        {
+            <div class="mb-4">
+                <h2 class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">Uploaded Files:</h2>
+                @foreach (var f in _files)
+                {
+                    <p class="text-md font-semibold">@f.OriginalFileName</p>
+                }
+            </div>
+        }
+
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <div class="flex flex-row justify-center space-x-4 pb-10">
+            <div class="rounded-md shadow">
+                <button type="button"
+                        @onclick="Cancel"
+                        class="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-red-700 hover:bg-red-100 hover:text-black md:py-4 md:text-lg md:px-10 shadow-md">
+                    <i class="fa fa-times mr-2"></i> Close Preview
+                </button>
+            </div>
+            <div class="rounded-md shadow">
+                <button type="button"
+                        @onclick="Send"
+                        class="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-green-100 hover:text-primary md:py-4 md:text-lg md:px-10 shadow-md">
+                    <i class="fa fa-paper-plane mr-2"></i> Send Brief
+                </button>
+            </div>
+        </div>
+        <div class="mb-10"></div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public BriefModel Brief { get; set; }
+
+    [Parameter]
+    public ClientModel Client { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> SendCallback { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> CancelCallback { get; set; }
+
+    private List<UploadedFileModel> _files;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _files = await Repository.GetUploadedFilesAsync(Brief.Guid);
+    }
+
+    private async Task Send()
+    {
+        await SendCallback.InvokeAsync(true);
+    }
+
+    private async Task Cancel()
+    {
+        await CancelCallback.InvokeAsync(false);
+    }
+
+}

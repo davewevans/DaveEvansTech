@@ -1,0 +1,28 @@
+﻿@page "/testemail"
+
+@using System.Drawing
+@using System.Net
+@using DaveEvansTech.Contracts
+@using DaveEvansTech.Models
+
+@inject IPostmarkEmailSender EmailSender
+
+<h3>SendEmail</h3>
+
+<button @onclick="SendMail" type="button" class="bg-primary text-white rounded">
+    Send Test Email
+</button>
+
+<div class="text-2xl">
+    @_message
+</div>
+
+@code {
+
+    private string _message = "";
+
+    private async Task SendMail()
+    {
+        await EmailSender.SendTestEmailPostmark();
+    }
+}

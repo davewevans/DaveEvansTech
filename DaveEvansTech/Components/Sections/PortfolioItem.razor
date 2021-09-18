@@ -1,0 +1,33 @@
+﻿
+
+<div class="h-auto flex flex-col md:flex-row border border-gray-300">
+    <div class="md:w-3/5 bg-green-100 p-6">
+        <div class="text-primary font-bold text-xl md:text-2xl font-serif mb-2 w-full">
+            @Title
+        </div>
+        <div class="text-sm md:text-base">
+            @ChildContent
+        </div>
+    </div>
+    <div class="md:w-2/5 bg-gray-300 flex justify-center items-center">
+        <video width="420" height="420" controls>
+            <source src=@($"portfolio-videos/{FileName}") type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+</div>
+
+
+@code {
+    
+    [Parameter]
+    public string FileName { get; set; }
+    
+    [Parameter]
+    public string Title { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+}

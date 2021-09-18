@@ -1,0 +1,16 @@
+﻿@using MimeKit.Text
+<div class="bg-white p-6">
+    @_markupString
+</div>
+
+@code {
+    [Parameter]
+    public string HtmlString { get; set; }
+
+    private MarkupString _markupString;
+
+    protected override void OnParametersSet()
+    {
+        _markupString = (MarkupString) HtmlUtils.HtmlDecode(HtmlString);
+    }
+}

@@ -1,0 +1,1045 @@
+﻿@page "/Brief"
+@using DaveEvansTech.Models
+@using DaveEvansTech.Contracts
+@using Syncfusion.Blazor.RichTextEditor
+@using Syncfusion.Blazor.Inputs
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Logging
+@using DaveEvansTech.Components.Sections
+@using MimeKit.Text
+@using Syncfusion.Blazor.Navigations
+@using System.Text
+@using Syncfusion.Blazor.Calendars
+
+
+
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@*@inject IRepository Repository*@
+@inject BriefFormService BriefFormService
+@inject IConfiguration Configuration
+@inject ILogger<BriefForm> Logger
+@inject BlazorTimerService TimerService
+@inject IPostmarkEmailSender EmailSender
+@inject IAppToastService AppToastService
+@inject IFileStorageService FileStorageService
+@inject NavigationManager Navigation
+
+@implements IDisposable
+
+
+
+@if (_isLoading)
+{
+    <div class="flex flex-col items-center h-32 mb-64">
+        <div>
+                <SfSpinner @bind-Visible="@_isLoading">
+                </SfSpinner>
+            </div>
+            <div class="text-sm">Loading project brief form...</div>
+    </div>
+}
+
+
+
+
+@if (!_isLoading && !_previewMode && _briefSections.Count > 0 && _client != null)
+{
+    <!--Container-->
+    <div class="sm:mx-auto lg:ml-40 lg:mr-40 2xl:ml-60 2xl:mr-60">
+    <div class="container w-full flex flex-wrap mx-auto px-4 pt-8 lg:pt-12 mt-12 bg-gray-100">
+
+    <!--Menu container-->
+    <div class="w-full lg:w-1/5 px-6 text-xl text-gray-800 leading-normal">
+
+        <!-- Menu for mobile-->
+        <div class="block lg:hidden sticky inset-0">
+            <button id="menu-toggle" class="flex w-full justify-end px-3 py-3 bg-white lg:bg-transparent border rounded border-gray-600 hover:border-yellow-600 appearance-none focus:outline-none">
+                <svg class="fill-current h-3 float-right" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menu for Tablet/Desktop-->
+        <div class="w-full sticky inset-0 hidden max-h-auto lg:h-auto overflow-x-hidden overflow-y-auto lg:overflow-y-hidden lg:block mt-0 my-2 lg:mt-0 lg:mb-6 border border-gray-400 lg:border-transparent bg-white shadow lg:shadow-none lg:bg-transparent z-20"
+             style="top:2em;" id="menu-content">
+            <ul class="py-2 md:py-0">
+                @* Generate menu items *@
+                @for (int i = 0; i < _briefSections.Count; i++)
+                {
+                    int index = i;
+                    <li class="py-1 md:my-2 hover:bg-yellow-100 lg:hover:bg-transparent border-l-4 border-transparent@(_menuLinksStyle[index])">
+                        <a href='#' class="block pl-4 align-middle text-gray-700 no-underline hover:text-primary"
+                           @onclick="() => ScrollToAnchor(index)"
+                           @onclick:preventDefault="true">
+                            <span class="pb-1 md:pb-0 text-sm">@_briefSections[index].Title</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <!-- /Menu container-->
+
+    <!--Section container-->
+    <section class="w-full lg:w-4/5 px-10">
+
+    <!-- Header Section -->
+    <div class="mb-10">
+        <!--Title-->
+        <h1 class="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 mb-4 lg:mt-0 md:text-2xl">
+            Project Brief
+        </h1>
+
+        <div class="flex flex-col space-y-2">
+            @*<sm class="text-sm px-2 bg-green-100 p-2">
+                <i class="fa fa-info-circle"></i> You can save your progress and login to finish later.
+            </sm>*@
+            <sm class="text-sm px-2 bg-green-100 p-2">
+                <i class="fa fa-info-circle"></i> Skip sections that don't apply.
+            </sm>
+            <sm class="text-sm px-2 bg-green-100 p-2">
+                <i class="fa fa-info-circle"></i> If you prefer to upload a project brief as a PDF or Word Document, you can do so at the bottom of this form.
+            </sm>
+        </div>
+
+
+        @*@if (!string.IsNullOrWhiteSpace(_client?.ApplicationUser?.FirstName))
+        {
+            <div class="font-sans font-semibold text-gray-600 text-sm mt-6 px-2 flex flex-row space-x-1">
+                <div>@_client.ApplicationUser?.FirstName</div>
+                <div>@_client.ApplicationUser?.LastName</div>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(_client?.CompanyName))
+        {
+            <div class="font-sans font-semibold text-gray-600 text-sm mt-6 px-2 flex flex-row space-x-1">
+                <div>@_client?.CompanyName</div>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(_client?.ApplicationUser?.Email))
+        {
+            <div class="font-sans font-semibold text-gray-600 text-sm px-2 mt-2">
+                <div>@_client?.ApplicationUser?.Email</div>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(_client?.ApplicationUser?.PhoneNumber))
+        {
+            <div class="font-sans font-semibold text-gray-600 text-sm px-2 mt-2">
+                <div>@_client?.ApplicationUser?.PhoneNumber</div>
+            </div>
+        }*@
+    </div>
+    <!-- /Header Section -->
+
+    <!--divider-->
+    <hr class="bg-gray-300 my-12">
+
+    <EditForm EditContext="@_editContext">
+
+        <DataAnnotationsValidator />
+        <div class="mb-8 text-red-700">
+            <ValidationSummary />
+        </div>
+        
+
+        <div class="flex-col space-y-6 mb-12">
+            <div>
+                <InputLabel For="FirstName">Company/Organization Name</InputLabel>
+                <InputText @attributes="AdditionalAttributes" class="lg:w-1/2 p-2" @bind-Value="_brief.CompanyName" />
+            </div>
+
+            <div class="flex space-x-8">
+                <div>
+                    <InputLabel For="FirstName"><span class="text-red-700">*</span> First Name</InputLabel>
+                    <InputText id="FirstName" class="appearance-none block w-full bg-white text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-gray-200" type="text" placeholder=""
+                               @bind-Value="_brief.FirstName" />
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _brief.FirstName)" />
+                    </p>
+                </div>
+
+                <div>
+                    <InputLabel For="LastName">Last Name</InputLabel>
+                    <InputText id="LastName" class="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder=""
+                               @bind-Value="_brief.LastName" />
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _brief.LastName)" />
+                    </p>
+                </div>
+            </div>
+          
+            <div class="flex space-x-8">
+                <div>
+                    <InputLabel For="Email"><span class="text-red-700">*</span> E-mail</InputLabel>
+                    <InputText id="Email" class="appearance-none block w-full bg-white text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-gray-200"
+                               type="email"
+                               @bind-Value="_brief.Email" />
+                    <p class="text-gray-700 text-xs italic">
+                        Please double check your email address.
+                    </p>
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _brief.Email)" />
+                    </p>
+                </div>
+
+                <div>
+                    <InputLabel For="Phone">Phone Number</InputLabel>
+                    <InputText id="Phone" class="appearance-none block w-full bg-white text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-gray-200"
+                               type="phone"
+                               @bind-Value="_brief.Phone" />
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _brief.Phone)" />
+                    </p>
+                </div>
+            </div>
+          
+        </div>
+        
+
+        <!-- ProjectSummary -->
+        <BriefFormSection ID="@_briefSections[0].Id" Title="@_briefSections[0].Title" Description="@_briefSections[0].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.ProjectSummary">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- AboutCompany -->
+        <BriefFormSection ID="@_briefSections[1].Id" Title="@_briefSections[1].Title" Description="@_briefSections[1].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.AboutCompany">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- TargetAudience -->
+        <BriefFormSection ID="@_briefSections[2].Id" Title="@_briefSections[2].Title" Description="@_briefSections[2].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.TargetAudience">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Goals -->
+        <BriefFormSection ID="@_briefSections[3].Id" Title="@_briefSections[3].Title" Description="@_briefSections[3].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.Goals">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Competitors -->
+        <BriefFormSection ID="@_briefSections[4].Id" Title="@_briefSections[4].Title" Description="@_briefSections[4].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.Competitors">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- LookAndFeel -->
+        <BriefFormSection ID="@_briefSections[5].Id" Title="@_briefSections[5].Title" Description="@_briefSections[5].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.LookAndFeel">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- LogoDesign -->
+        <BriefFormSection ID="@_briefSections[6].Id" Title="@_briefSections[6].Title" Description="@_briefSections[6].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.LogoDesign">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Features -->
+        <BriefFormSection ID="@_briefSections[7].Id" Title="@_briefSections[7].Title" Description="@_briefSections[7].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.Features">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Content -->
+        <BriefFormSection ID="@_briefSections[8].Id" Title="@_briefSections[8].Title" Description="@_briefSections[8].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.Content">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- InHouseRequirements -->
+        <BriefFormSection ID="@_briefSections[9].Id" Title="@_briefSections[9].Title" Description="@_briefSections[9].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.InHouseRequirements">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Hosting -->
+        <BriefFormSection ID="@_briefSections[10].Id" Title="@_briefSections[10].Title" Description="@_briefSections[10].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.Hosting">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- OnGoingSupport -->
+        <BriefFormSection ID="@_briefSections[11].Id" Title="@_briefSections[11].Title" Description="@_briefSections[11].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.OnGoingSupport">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- TargetPlatforms -->
+        <BriefFormSection ID="@_briefSections[12].Id" Title="@_briefSections[12].Title" Description="@_briefSections[12].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.TargetPlatforms">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- DatabaseIntegration -->
+        <BriefFormSection ID="@_briefSections[13].Id" Title="@_briefSections[13].Title" Description="@_briefSections[13].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.DatabaseIntegration">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- BackendDevelopment -->
+        <BriefFormSection ID="@_briefSections[14].Id" Title="@_briefSections[14].Title" Description="@_briefSections[14].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.BackendDevelopment">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- OnlineMarketing -->
+        <BriefFormSection ID="@_briefSections[15].Id" Title="@_briefSections[15].Title" Description="@_briefSections[15].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.OnlineMarketing">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Deadline -->
+        <BriefFormSection ID="@_briefSections[16].Id" Title="@_briefSections[16].Title" Description="@_briefSections[16].Description">
+            <BelowDescription>
+                <div class="w-1/4">
+                    <SfDatePicker TValue="DateTime?" Placeholder="Choose a Date" @bind-Value="@_brief.Deadline" ShowClearButton="true" CssClass="e-custom"></SfDatePicker>
+                </div>
+
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- MeasuringSuccess -->
+        <BriefFormSection ID="@_briefSections[17].Id" Title="@_briefSections[17].Title" Description="@_briefSections[17].Description">
+            <BelowDescription>
+                <!-- Syncfusion rich text editor -->
+                <SfRichTextEditor ShowCharCount="true"
+                                  MaxLength="2000"
+                                  EnableHtmlEncode="true"
+                                  @bind-Value="@_brief.MeasuringSuccess">
+                    <ChildContent>
+                        <RichTextEditorToolbarSettings Items="@Tools" />
+                    </ChildContent>
+                </SfRichTextEditor>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Budget -->
+        <BriefFormSection ID="@_briefSections[18].Id" Title="@_briefSections[18].Title" Description="@_briefSections[18].Description">
+            <BelowDescription>
+                <div class="flex flex-col space-y-2">
+                    <div class="text-sm text-gray-700 font-semibold">Budget Range</div>
+                    <div class="flex flex-row space-x-1">
+                        <SfTextBox @ref="_budgetMinInput"
+                                   Placeholder=""
+                                   Width="75px"
+                                   CssClass="e-custom"
+                                   Created="@onCreateBudgetMin"
+                                   @bind-Value="@_brief.BudgetMinimum">
+                        </SfTextBox>
+                        <div class="text-lg">-</div>
+                        <SfTextBox @ref="_budgetMaxInput"
+                                   Placeholder=""
+                                   Width="75px"
+                                   CssClass="e-custom"
+                                   Created="@onCreateBudgetMax"
+                                   @bind-Value="@_brief.BudgetMaximum">
+                        </SfTextBox>
+                    </div>
+                </div>
+            </BelowDescription>
+        </BriefFormSection>
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+        <!-- Upload files -->
+        <BriefFormSection ID="@_briefSections[19].Id" Title="@_briefSections[19].Title" Description="@_briefSections[19].Description">
+            <BelowDescription>
+                <!-- Upload files -->
+                <div ID="DropArea">
+                    Drop files here to upload
+                </div>
+                <SfUploader ID="UploadFiles"
+                            DropArea="#DropArea"
+                            MaxFileSize="104857600">
+                    @* Max file size: 100MB *@
+                    <UploaderAsyncSettings SaveUrl="@_saveFilesUrl"
+                                           RemoveUrl="@_removeFilesUrl"
+                                           RetryCount="3"
+                                           RetryAfterDelay="3000">
+                    </UploaderAsyncSettings>
+                </SfUploader>
+            </BelowDescription>
+        </BriefFormSection>
+
+
+        <!--divider-->
+        <hr class="bg-gray-300 my-12">
+
+
+        <div class="flex flex-row justify-center space-x-4 mb-10">
+            @*<div class="rounded-md shadow">
+                <button type="button"
+                        @onclick="@(() => SaveBrief(false))"
+                        class="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-green-100 hover:text-primary md:py-4 md:text-lg md:px-10 shadow-md">
+                    <i class="fa fa-cloud-upload-alt mr-2"></i> Save
+                </button>
+            </div>*@
+            <div class="rounded-md shadow">
+                <button type="button"
+                        @onclick="PreviewAndSend"
+                        class="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-green-100 hover:text-primary md:py-4 md:text-lg md:px-10 shadow-md">
+                    <i class="fa fa-paper-plane mr-2"></i> Preview & Send
+                </button>
+            </div>
+        </div>
+
+    </EditForm>
+
+    </section>
+    <!--/Section container-->
+
+    </div>
+    </div>
+    <!-- /Container -->
+}
+else if (_previewMode)
+{
+    <BriefFormPreviewSend Brief="@_brief" Client="@_client" SendCallback="@SaveAndSend" CancelCallback="@CancelPreviewMode"/>
+}
+else
+{
+    <div class="sm:mx-auto lg:ml-40 lg:mr-40 2xl:ml-60 2xl:mr-60 mb-16">
+        <div class="container w-full flex flex-wrap mx-auto px-4 py-8 lg:pt-12 mt-12 bg-green-100">
+            <h2 class="text-2xl font-bold mb-4">Register</h2>
+            <div class="text-xl">
+                Please register before filling out the project brief form. (You can register through Google.)
+                You will be redirected back to this page after you register.
+            </div>
+            <div class="mt-4">
+                <a href="@($"Identity/Account/Register?returnUrl=/{_returnUrl}")">
+                    <span class="font-semibold text-primary text-2xl underline"><i class="fas fa-sign-in-alt"></i> Register</span>
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+@code {
+
+    //[CascadingParameter]
+    //public Task<AuthenticationState> AuthState { get; set; }
+
+    EditContext _editContext;
+
+    private bool _isLoading = true;
+
+    private bool _previewMode = false;
+    private bool _isAuthenticated = false;
+
+    private string _returnUrl = "";
+    private string _saveFilesUrl = "";
+    private string _removeFilesUrl = "";
+
+    private Dictionary<string, object> _saveBtnAttr = new Dictionary<string, object>()
+    {
+        {"title", "Save the brief and finish later."}
+    };
+
+    private Dictionary<string, object> _sendBtnAttr = new Dictionary<string, object>()
+    {
+        {"title", "Preview the brief and then send it if it's ready."}
+    };
+
+    private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()
+    {
+        new ToolbarItemModel() {Command = ToolbarCommand.Bold},
+        new ToolbarItemModel() {Command = ToolbarCommand.Italic},
+        new ToolbarItemModel() {Command = ToolbarCommand.Underline},
+        new ToolbarItemModel() {Command = ToolbarCommand.StrikeThrough},
+        new ToolbarItemModel() {Command = ToolbarCommand.FontName},
+        new ToolbarItemModel() {Command = ToolbarCommand.FontSize},
+        new ToolbarItemModel() {Command = ToolbarCommand.FontColor},
+        new ToolbarItemModel() {Command = ToolbarCommand.BackgroundColor},
+        new ToolbarItemModel() {Command = ToolbarCommand.LowerCase},
+        new ToolbarItemModel() {Command = ToolbarCommand.UpperCase},
+        new ToolbarItemModel() {Command = ToolbarCommand.SuperScript},
+        new ToolbarItemModel() {Command = ToolbarCommand.SubScript},
+        new ToolbarItemModel() {Command = ToolbarCommand.Separator},
+        new ToolbarItemModel() {Command = ToolbarCommand.Formats},
+        new ToolbarItemModel() {Command = ToolbarCommand.Alignments},
+        new ToolbarItemModel() {Command = ToolbarCommand.OrderedList},
+        new ToolbarItemModel() {Command = ToolbarCommand.UnorderedList},
+        new ToolbarItemModel() {Command = ToolbarCommand.Outdent},
+        new ToolbarItemModel() {Command = ToolbarCommand.Indent},
+        new ToolbarItemModel() {Command = ToolbarCommand.Separator},
+        new ToolbarItemModel() {Command = ToolbarCommand.CreateLink},
+        new ToolbarItemModel() {Command = ToolbarCommand.Image},
+        new ToolbarItemModel() {Command = ToolbarCommand.CreateTable},
+        new ToolbarItemModel() {Command = ToolbarCommand.Separator},
+        new ToolbarItemModel() {Command = ToolbarCommand.ClearFormat},
+        new ToolbarItemModel() {Command = ToolbarCommand.Print},
+        new ToolbarItemModel() {Command = ToolbarCommand.SourceCode},
+        new ToolbarItemModel() {Command = ToolbarCommand.Separator},
+        new ToolbarItemModel() {Command = ToolbarCommand.Undo},
+        new ToolbarItemModel() {Command = ToolbarCommand.Redo}
+    };
+
+    private List<BriefSection> _briefSections = new();
+
+    private List<FileAttachment> _fileAttachments = new();
+
+    Dictionary<string, object> AdditionalAttributes = new();
+
+    private BriefModel _brief = new();
+
+    private ClientModel _client = new();
+
+    string _basePath = "";
+    int _howManySections = 0;
+
+    List<string> _sections = new();
+    List<string> _menuLinksStyle = new();
+
+    SfTextBox _budgetMinInput;
+    SfTextBox _budgetMaxInput;
+
+    private const double IntervalMilliseconds = 120000;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _returnUrl = $"{Navigation.ToBaseRelativePath(Navigation.Uri)}";
+
+        _editContext = new EditContext(_brief);
+
+        // Get form text from json file
+        _briefSections = BriefFormService.GetBriefSections();
+        _howManySections = _briefSections.Count;
+
+        _menuLinksStyle = Enumerable.Repeat(string.Empty, _howManySections).ToList();
+        SetMenuLinkStyle(0);
+
+        AdditionalAttributes = new Dictionary<string, object>
+        {
+            ["id"] = "input-company-name",
+            ["maxlength"] = "128",
+            ["placeholder"] = "Company/Organization name"
+        };
+
+        _saveFilesUrl = $"{Configuration["BaseApiUrl"]}fileupload/saveUploadedFiles/{_brief.Guid}/ProjectFilesContainer";
+        _removeFilesUrl = $"{Configuration["BaseApiUrl"]}fileupload/removeUploadedFile/{_brief.Guid}/ProjectFilesContainer";
+
+        // await StartTimer();
+    }
+
+    //private async Task StartTimer()
+    //{
+    //    TimerService.SetTimer(IntervalMilliseconds, true);
+    //    TimerService.OnElapsed +=
+    //        async delegate { await AutoSave(); };
+    //}
+
+    protected override async Task OnParametersSetAsync()
+    {
+        //var authState = await AuthState;
+        //var user = authState.User;
+        //if (user?.Identity != null)
+        //{
+        //    _isAuthenticated = user.Identity.IsAuthenticated;
+        //}
+
+        //if (!_isAuthenticated) return;
+
+        //if (user?.Identity != null) _client = await Repository.GetClientByEmail(user.Identity.Name);
+
+        // Assign saved brief if there is one, otherwise use the newly created one.
+        //BriefModel savedBrief = null;
+        //if (_client != null)
+        //{
+        //    savedBrief = await Repository.GetIncompleteBriefAsync(_client.ClientID);
+        //}
+        //_brief = savedBrief ?? _brief;
+
+        _isLoading = false;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+        }
+    }
+
+    private void SetMenuLinkStyle(int index)
+    {
+        string style = " font-bold border-primary";
+        int itemIndex = _menuLinksStyle.FindIndex(x => x.Equals(style));
+        if (itemIndex >= 0) _menuLinksStyle[itemIndex] = string.Empty;
+        if (index < _menuLinksStyle.Count) _menuLinksStyle[index] = style;
+    }
+
+    private async Task ScrollToAnchor(int index)
+    {
+        SetMenuLinkStyle(index);
+        if (index < _briefSections.Count)
+            await JSRuntime.BlazorScrollToId(_briefSections[index].Id);
+    }
+
+    private async Task SaveBrief(bool autoSave)
+    {
+
+
+
+        try
+        {
+            bool isSavedBrief = await Repository.IsSavedBriefAsync(_brief);
+            if (isSavedBrief) // update existing brief
+            {
+                await Repository.UpdateBriefAsync(_brief);
+                if (!autoSave) AppToastService.ShowSuccessToast("Updated", "Your brief was updated successfully.");
+            }
+            else // Create new brief
+            {
+                _brief.ClientID = _client.ClientID;
+                await Repository.AddBrief(_brief);
+                if (!autoSave) AppToastService.ShowSuccessToast("Saved", "Your brief has been saved.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // TODO log exception
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void PreviewAndSend()
+    {
+        _previewMode = true;
+    }
+
+    private async Task SaveAndSend(bool doSend)
+    {
+
+        bool isValid = _editContext.Validate();
+        if (!isValid)
+        {
+            _previewMode = false;
+            return;
+        }
+
+
+        try
+        {
+            _brief.IsComplete = true;
+            //await SaveBrief(autoSave: false);
+
+            var filesUploaded = await Repository.GetUploadedFilesAsync(_brief.Guid);
+            if (filesUploaded != null && filesUploaded.Count > 0)
+            {
+                _fileAttachments = new List<FileAttachment>();
+                foreach (var f in filesUploaded)
+                {
+                    var bytes = await FileStorageService.DownloadAsync(f.BlobFileName, Configuration["ProjectFilesContainer"]);
+                    _fileAttachments.Add(new FileAttachment
+                    {
+                        Bytes = bytes,
+                        Path = $"{Configuration["BlobUrlProjectFiles"]}{f.BlobFileName}",
+                        FileName = f.OriginalFileName,
+                        Mime = f.ContentType,
+                        Extension = System.IO.Path.GetExtension(f.OriginalFileName)
+                    });
+                }
+            }
+
+            // Send email to me
+            var email = new PostmarkEmailModel
+            {
+                ToEmailAddress = "davewevans72@gmail.com, dave@daveevans.tech",
+                FromEmailAddress = "info@daveevans.tech",
+                Subject = "New Project Brief from DaveEvans.tech",
+                HtmlBody = await BuildHtmlStringForEmail(),
+                Tag = "brief"
+            };
+            await EmailSender.SendEmailPostmarkAsync(email, _fileAttachments);
+            AppToastService.ShowSuccessToast("Brief Sent", "Brief has been sent successfully!");
+
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            // TODO log exception
+            Console.WriteLine(ex.Message);
+            AppToastService.ShowErrorToast("Error", "Oops, something went wrong.");
+        }
+    }
+
+    private void CancelPreviewMode()
+    {
+        _previewMode = false;
+    }
+
+
+    private async Task AutoSave()
+    {
+        //await SaveBrief(autoSave: true);
+        //await InvokeAsync(() => AppToastService.ShowSuccessToast("AutoSaved successfully!", "AutoSaved"));
+    }
+
+    private void onCreateBudgetMin()
+    {
+        this._budgetMinInput.AddIcon("prepend", "e-dollar-sign");
+    }
+
+    private void onCreateBudgetMax()
+    {
+        this._budgetMaxInput.AddIcon("prepend", "e-dollar-sign");
+    }
+
+    private async Task<string> BuildHtmlStringForEmail()
+    {
+        var files = await Repository.GetUploadedFilesAsync(_brief.Guid);
+        var sb = new StringBuilder();
+
+        sb.Append("<h1>New project brief from DaveEvans.tech </h1>");
+        sb.Append($"{_brief.CompanyName}<br /></br >");
+        sb.Append($"{_brief.FirstName} {_brief.LastName}<br />");
+        sb.Append($"{_brief.Email}<br />");
+        sb.Append($"{_brief.Phone}<br /></br >");
+
+        if (!string.IsNullOrWhiteSpace(_brief.ProjectSummary))
+        {
+            sb.Append("<h2>Project Summary</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.ProjectSummary}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.AboutCompany))
+        {
+            sb.Append("<h2>About Company</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.AboutCompany}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.TargetAudience))
+        {
+            sb.Append("<h2>Target Audience</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.TargetAudience}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.Goals))
+        {
+            sb.Append("<h2>Goals</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.Goals}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.Competitors))
+        {
+            sb.Append("<h2>Competitors</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.Competitors}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.LookAndFeel))
+        {
+            sb.Append("<h2>Look and Feel</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.LookAndFeel}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.LogoDesign))
+        {
+            sb.Append("<h2>Logo Design</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.LogoDesign}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.Features))
+        {
+            sb.Append("<h2>Features</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.Features}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.Content))
+        {
+            sb.Append("<h2>Content</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.Content}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.InHouseRequirements))
+        {
+            sb.Append("<h2>In-house Requirements</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.InHouseRequirements}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.Hosting))
+        {
+            sb.Append("<h2>Hosting</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.Hosting}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.OnGoingSupport))
+        {
+            sb.Append("<h2>On-going Support</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.OnGoingSupport}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.TargetPlatforms))
+        {
+            sb.Append("<h2>Target Platforms</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.TargetPlatforms}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.DatabaseIntegration))
+        {
+            sb.Append("<h2>Database Integration</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.DatabaseIntegration}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.BackendDevelopment))
+        {
+            sb.Append("<h2>Backend Development</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.BackendDevelopment}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.OnlineMarketing))
+        {
+            sb.Append("<h2>Online Marketing</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.OnlineMarketing}")}<br /><br />");
+        }
+        if (!string.IsNullOrWhiteSpace(_brief.MeasuringSuccess))
+        {
+            sb.Append("<h2>Measuring Success</h2>");
+            sb.Append($"{(MarkupString) HtmlUtils.HtmlDecode($"{_brief.MeasuringSuccess}")}<br /><br />");
+        }
+
+        sb.Append($"<strong>Deadline:</strong> {_brief.Deadline:d}<br /><br />");
+        sb.Append($"<strong>Budget:</strong> ${_brief.BudgetMinimum} - ${_brief.BudgetMaximum}");
+
+        sb.Append("<h2>Uploaded files:</h2>");
+        foreach (var f in files)
+        {
+            sb.Append(f.OriginalFileName + "<br />");
+        }
+
+        return sb.ToString();
+    }
+
+    public void Dispose()
+    {
+        // TimerService.StopTimer();
+    }
+
+}
+
+<style>
+    #budget-slider.e-control.e-slider .e-handle {
+                height: 25px;
+                width: 8px;
+                top: 3px;
+                border-radius: 15px;
+                background-color: #325E2E;
+            }
+     #budget-slider.e-slider-green .e-range {
+                background-color: #325E2E;
+            }
+                
+      .e-dollar-sign::before {        
+                 font-family: "Font Awesome 5 Free"; 
+                 font-weight: 900; 
+                 content: "\f155";
+                 color: #109248;
+            }            
+    
+                
+        #DropArea {
+               padding: 50px 25px;
+               margin: 30px auto;
+               border: 1px dashed #109248;
+               text-align: center;
+               width: 100%;
+               display: inline-flex;
+             }            
+  
+</style>

@@ -1,0 +1,13 @@
+﻿<div class="w-16 h-16 md:w-24 md:h-24">
+    <img class="object-fill object-center transform hover:-skew-x-6" src="@ImageSrc" alt="@AltText">
+</div>
+
+@code 
+{
+    [Parameter]
+    public string ImageSrc { get; set; }
+    
+    [Parameter]
+    public string AltText { get; set; }
+    
+}

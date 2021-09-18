@@ -1,0 +1,276 @@
+﻿@page "/Contact"
+@using DaveEvansTech.Components.Sections
+@using DaveEvansTech.Contracts
+@using DaveEvansTech.Models
+@using DaveEvansTech.Components.UIComponents
+@using Microsoft.Extensions.Logging
+@inject IAppToastService AppToastService
+@inject IPostmarkEmailSender EmailSender
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IRepository Repository
+@inject ILogger<ContactForm> Logger
+@inject BlazorTimerService TimerService
+@implements IAsyncDisposable
+
+@using System.Threading;
+
+
+
+<div class="hb-p-605f1c504cb9c92effa9f023-2"></div>
+<img height="1" width="1" style="display:none" src="https://www.honeybook.com/p.png?pid=605f1c504cb9c92effa9f023">
+
+<div class="mt-16">
+    <button type="button" @onclick="RenderForm">Render Form</button>
+</div>
+
+@if (!_hasRefreshed)
+{
+    <div class="flex flex-col items-center h-32 mb-64">
+        <div>
+            <SfSpinner @bind-Visible="@_isLoading">
+            </SfSpinner>
+        </div>
+    </div>
+}
+
+
+
+@*@if (_renderForm)
+    {
+        <div class="mx-auto md:ml-72 md:mr-72 2xl:ml-72 2xl:mr-72 shadow-2xl my-8 mx-auto">
+            <div class="hb-p-605f1c504cb9c92effa9f023-2"></div>
+            <img height="1" width="1" style="display:none" src="https://www.honeybook.com/p.png?pid=605f1c504cb9c92effa9f023">
+        </div>
+    }
+    else
+    {
+        <div class="flex flex-col items-center h-32 mb-64">
+            <div>
+                <SfSpinner @bind-Visible="@_isLoading">
+                </SfSpinner>
+            </div>
+        </div>
+    }*@
+
+
+
+
+@*<div class="sm:mx-auto lg:ml-72 lg:mr-72 2xl:ml-72 2xl:mr-72 mt-10">
+    <div class="container w-full flex-col mx-auto p-8 bg-gray-100">*@
+
+@*@{JSRuntime.ConsoleLog("this is a test.");}*@
+
+@*<div>
+        <div class="hb-p-605f1c504cb9c92effa9f023-2"></div>
+        <img height="1" width="1" style="display:none" src="https://www.honeybook.com/p.png?pid=605f1c504cb9c92effa9f023">
+    </div>*@
+
+@*@if (!_formSent)
+    {
+        <div class="p-6 mb-6 font-semibold font-sans text-2xl text-center">
+            Contact Me
+        </div>
+
+        <EditForm Model="@_contact"
+                  class="max-w-lg mx-auto"
+                  OnValidSubmit="HandleValidSubmit"
+                  OnInvalidSubmit="HandleInvalidSubmit">
+            <DataAnnotationsValidator />
+
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <InputLabel For="FirstName">First Name</InputLabel>
+                    <InputText id="FirstName" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-gray-200" type="text" placeholder=""
+                               @bind-Value="_contact.FirstName" />
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _contact.FirstName)" />
+                    </p>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <InputLabel For="LastName">Last Name</InputLabel>
+                    <InputText id="LastName" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder=""
+                               @bind-Value="_contact.LastName" />
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _contact.LastName)" />
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <InputLabel For="Email">E-mail</InputLabel>
+                    <InputText id="Email" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-gray-200"
+                               type="email"
+                               @bind-Value="_contact.Email" />
+                    <p class="text-gray-700 text-xs italic">
+                        Please double check your email address.
+                    </p>
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _contact.Email)" />
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <InputLabel For="Body">Message</InputLabel>
+                    <InputTextArea class="no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none"
+                                   id="Body"
+                                   @bind-Value="_contact.Body">
+                    </InputTextArea>
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _contact.Body)" />
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-row justify-center mt-6">
+                <div class="w-32">
+                    <button class="shadow bg-primary hover:bg-green-100 focus:shadow-outline focus:outline-none text-white hover:text-primary font-bold py-2 px-4 rounded" type="submit">
+                        <i class="fa fa-envelope mr-1"></i> Send
+                    </button>
+                </div>
+            </div>
+        </EditForm>*@
+
+
+@* <div class="border-2 border-gray-300 p-6 my-6 mx-auto xl:w-3/5 2xl:w-1/2 @_captchaSectionBgColor"> *@
+@*              @if (!_notARobot) *@
+@*              { *@
+@*                  <div class="font-semibold font-mono text-lg mb-4">Human Verification</div> *@
+@*              } *@
+@*              <CaptchaComponent OnCaptchaEnteredCallback="CaptchaSubmitted"/> *@
+@*       </div> *@
+
+
+
+@*<div class="mb-10">
+            <br />
+        </div>
+    }
+    else
+    {
+        <div class="mx-auto text-center text-gray-700 text-xl mb-10">Message sent! <br /> I'll get back with you as soon as I can (usually wihtin a few hours).<br /><br /><br /></div>
+    }*@
+
+@*</div>
+    </div>*@
+
+
+@code {
+
+    private ContactModel _contact = new();
+    private string _captchaSectionBgColor = "bg-green-100 ";
+    private bool _formSent = false;
+    private bool _notARobot = true;
+
+    private int counter = 60;
+
+    private static bool _hasRefreshed = false;
+    private bool _isLoading = true;
+
+    // You need to use .AsTask() to convert the ValueTask to Task as it may be awaited multiple times
+    private IJSObjectReference _jsModule;
+    //private Task<IJSObjectReference> Module => _module ??= JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/honey-book.js").AsTask();
+
+    protected override void OnInitialized()
+    {
+        //_hasRefreshed = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/honey-book.js");
+
+            await _jsModule.InvokeVoidAsync("renderHoneyBookForm", null, null, "script", "https://widget.honeybook.com/assets_users_production/websiteplacements/placement-controller.min.js", "605f1c504cb9c92effa9f023", null, null, null);
+            // (window, document, "script", "https://widget.honeybook.com/assets_users_production/websiteplacements/placement-controller.min.js", "605f1c504cb9c92effa9f023")
+        }
+    }
+
+    private async Task RenderForm()
+    {
+        _jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/honey-book.js");
+
+        await _jsModule.InvokeVoidAsync("renderHoneyBookForm", null, null, "script", "https://widget.honeybook.com/assets_users_production/websiteplacements/placement-controller.min.js", "605f1c504cb9c92effa9f023", null, null, null);
+    }
+
+
+    private void StartTimer()
+    {
+        TimerService.SetTimer(1000, false);
+        TimerService.OnElapsed +=
+            async delegate { await HoneyBookContactFormWorkaround(); };
+    }
+
+    private async Task HoneyBookContactFormWorkaround()
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        _hasRefreshed = true;
+        _isLoading = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    async Task Submit()
+    {
+        //var module = await Module;
+        //await module.InvokeVoidAsync("sayHi", name);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        //if (_module != null)
+        //{
+        //    var module = await _module;
+        //    await module.DisposeAsync();
+        //}
+
+        _hasRefreshed = !_hasRefreshed;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!_notARobot)
+        {
+            AppToastService.ShowInfoToast("Human Verification Incomplete", "Please complete the human verification section.");
+            _captchaSectionBgColor = "bg-red-200";
+            return;
+        }
+        try
+        {
+            await Repository.SaveContactForm(_contact);
+            var email = new PostmarkEmailModel
+            {
+                ToEmailAddress = "dave@daveevans.tech,davewevans72@gmail.com",
+                FromEmailAddress = "info@daveevans.tech",
+                Subject = "Contact form submission",
+                TextBody = $"{_contact.FirstName} {_contact.LastName} \n\n {_contact.Email} \n\n {_contact.Body}"
+            };
+            await EmailSender.SendEmailPostmarkAsync(email);
+            AppToastService.ShowSuccessToast("Sent", "Message sent. I will reply ASAP.");
+            _formSent = true;
+        }
+        catch (Exception ex)
+        {
+            AppToastService.ShowErrorToast("Oops!", "Something screwed up. That's embarrassing.");
+            Logger.LogError(ex.Message);
+        }
+    }
+
+    private void HandleInvalidSubmit()
+    {
+        if (!_notARobot)
+        {
+            AppToastService.ShowInfoToast("Human Verification Incomplete", "Please complete the human verification section.");
+            _captchaSectionBgColor = "bg-red-200";
+        }
+        AppToastService.ShowWarningToast("Incomplete Form", "The contact form is incomplete.");
+    }
+
+    private void CaptchaSubmitted(bool notARobot)
+    {
+        _notARobot = notARobot;
+        _captchaSectionBgColor = "";
+    }
+
+}

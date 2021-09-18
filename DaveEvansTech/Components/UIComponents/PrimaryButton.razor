@@ -1,0 +1,28 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="rounded-md shadow">
+    <button type="button"
+            @onclick="OnClickHandler"
+            class=@($"{Width} flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-green-100 hover:text-primary md:py-4 md:text-lg md:px-10 shadow-md")>
+        @ChildContent 
+    </button>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent  { get; set; }
+
+    [Parameter]
+    public string Path { get; set; } = "/";
+
+    [Parameter]
+    public string Width { get; set; } = "w-full";
+
+
+    private void OnClickHandler()
+    {
+        if (!string.IsNullOrWhiteSpace(Path))
+            NavigationManager.NavigateTo(Path);
+    }
+
+}

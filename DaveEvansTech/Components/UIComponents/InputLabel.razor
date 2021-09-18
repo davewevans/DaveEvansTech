@@ -1,0 +1,12 @@
+﻿<label for="@For" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+    @ChildContent
+</label>
+
+@code
+{
+    [Parameter]
+    public string For { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

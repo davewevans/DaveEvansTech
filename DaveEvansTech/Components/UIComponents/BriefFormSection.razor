@@ -1,0 +1,29 @@
+﻿<!--Title-->
+<h2 id='@ID' class="font-sans font-bold break-normal text-gray-700 px-2 mb-4 text-xl">@Title</h2>
+
+<!--Card-->
+<div class="flex flex-col px-2">
+    @AboveDescription
+    <p class="font-sans font-normal break-words text-gray-800 my-4">
+        @Description
+    </p>
+    @BelowDescription
+</div>
+<!--/Card-->
+
+@code {
+    [Parameter]
+    public string ID { get; set; }
+    
+    [Parameter]
+    public string Title { get; set; }
+    
+    [Parameter]
+    public string Description { get; set; }
+    
+    [Parameter]
+    public RenderFragment AboveDescription { get; set; }
+    
+    [Parameter]
+    public RenderFragment BelowDescription { get; set; }
+}

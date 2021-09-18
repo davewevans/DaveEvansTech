@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+	<!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="npm run buildcss" />
+	</Target>-->	
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>0bc6018d-f33d-4fe2-8df1-d12606e9f8c8</UserSecretsId>
+  </PropertyGroup>	
+  <ItemGroup>
+    <Compile Remove="Helpers\ServicesExtensions.cs" />
+    <Compile Remove="Models\ApplicationUser.cs" />
+    <Compile Remove="Pages\Error.cshtml.cs" />
+  </ItemGroup>	
+  <ItemGroup>
+    <Content Remove="C:\Users\davew\.nuget\packages\select.htmltopdf.netcore\21.1.0\contentFiles\any\any\Select.Html.dep" />
+    <Content Remove="Components\Sections\CaptchaComponent.razor" />
+    <Content Remove="Pages\BriefForm.razor" />
+    <Content Remove="Pages\ClientPortal.razor" />
+    <Content Remove="Pages\Error.cshtml" />
+    <Content Remove="Pages\Shared\_Layout.cshtml" />
+    <Content Remove="Pages\Shared\_LoginPartial.cshtml" />
+    <Content Remove="Pages\Shared\_ValidationScriptsPartial.cshtml" />
+    <Content Remove="Pages\_Host.cshtml" />
+    <Content Remove="Pages\_ViewImports.cshtml" />
+    <Content Remove="Pages\_ViewStart.cshtml" />
+    <Content Remove="Shared\LoginDisplay.razor" />
+    <Content Remove="Shared\LoginDisplayMobile.razor" />
+  </ItemGroup>	
+  <ItemGroup>
+    <None Remove="Shared\LoginDisplay.razor.css" />
+    <None Remove="Shared\LoginDisplayMobile.razor.css" />
+  </ItemGroup>  
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+    <PackageReference Include="Blazored.Toast" Version="3.1.2" />
+    <PackageReference Include="LoremNET" Version="2.0.0" />
+    <PackageReference Include="MailKit" Version="2.15.0" />
+    <PackageReference Include="Markdig" Version="0.26.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.9" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Postmark" Version="4.5.2" />
+    <PackageReference Include="Select.HtmlToPdf.NetCore" Version="21.1.0" />
+    <PackageReference Include="Syncfusion.Blazor" Version="19.2.0.62" />
+    <PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="19.2.0.55" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+  </ItemGroup>  
+  <ItemGroup>
+    <Folder Include="Pages\Shared\" />
+  </ItemGroup>
+
+</Project>

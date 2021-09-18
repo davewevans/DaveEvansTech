@@ -1,0 +1,57 @@
+﻿@using DaveEvansTech.Models
+@using DaveEvansTech.Contracts
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+
+
+<AuthorizeView>
+    <Authorized>
+
+        <li class="">
+            <div class="hoverable hover:bg-primary hover:text-white dropdown inline-block relative pt-6">
+                <a href="#" class="relative block px-4 pb-4 pt-2 text-sm font-bold lg:text-base hover:bg-primary hover:text-white">
+                    <i class="fa fa-user mr-1"></i> @_clientName
+                </a>
+                <ul class="dropdown-menu absolute hidden text-white">
+                    <li class="border-b border-white">
+                        <a class="bg-primary hover:bg-green-500 py-2 px-4 block whitespace-no-wrap" href="/clientportal"><i class="fa fa-info-circle mr-1"></i>Client Portal</a>
+                    </li>
+                    <li class="border-b border-white">
+                        <a class="bg-primary hover:bg-green-500 py-2 px-4 block whitespace-no-wrap" href="/Identity/Account/Manage"><i class="fa fa-cog mr-1"></i>Settings</a>
+                    </li>
+                    <li class="rounded-b bg-primary hover:bg-green-500 py-2 px-4 block whitespace-no-wrap">
+                        <form method="post" action="Identity/Account/LogOut">
+                            <button type="submit" class="relative block">
+                                <i class="fa fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+
+    </Authorized>
+    <NotAuthorized>
+        <li class="hover:bg-primary hover:text-white pt-2">
+            <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="/Identity/Account/Login?ReturnUrl=/ClientPortal">
+                Client Portal
+            </NavLink>
+        </li>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+    [CascadingParameter]
+    public ClientModel Client { get; set; }
+
+    private string _clientName = "Client";
+
+    protected override void OnParametersSet()
+    {
+        _clientName = string.IsNullOrWhiteSpace(Client?.ApplicationUser?.FirstName) ? "Client" : Client?.ApplicationUser?.FirstName;
+    }
+
+}

@@ -1,0 +1,102 @@
+﻿[
+  {
+    "id": "section1",
+    "title": "Project Summary",
+    "description": "Please give me a general overview of your project."
+  },
+  {
+    "id": "section2",
+    "title": "About Company or Organization",
+    "description": "Tell me about your business or organization. History, brand, size, staff and locations will all help me understand what you’re all about. Include a summary on the services or products you provide. Describe your mission. Also include any plans for future growth that might be important for me to be aware of."
+  },
+  {
+    "id": "section3",
+    "title": "Target Audience",
+    "description": "Briefly describe your target audience, including their needs and interests."
+  },
+  {
+    "id": "section4",
+    "title": "Goals",
+    "description": "What do you want to achieve with the website or app?"
+  },
+  {
+    "id": "section5",
+    "title": "Competitors",
+    "description": "Who are your main competitors? I can look at what they’re doing right and what they’re doing wrong. Some may have particular areas of interest i.e. key functionality. Which sites/apps have great designs that you like? Take a look at things like layout, color schemes, typography, photography, and unique tools or features. Try providing a list of links with reference notes for each of them."
+  },
+  {
+    "id": "section6",
+    "title": "Look & Feel",
+    "description": "Try to describe the ‘look & feel’ of the new app or site. How much free reign do you want me to have with the design?"
+  },
+  {
+    "id": "section7",
+    "title": "Logo Design",
+    "description": "Will you need custom logo design? If so, what preferences do you have for one, such as colors, typography, layout? Try providing links to websites with logos that you like."
+  },
+  {
+    "id": "section8",
+    "title": "Features",
+    "description": "Please list the features and requirements for the new app or website. For example, should it have a blog? An Interactive map? API integration? Push notifications? Send emails? User registrations and logins? Please describe all the features you need this app/website to have."
+  },
+  {
+    "id": "section9",
+    "title": "Content",
+    "description": "Will you be providing new content for the app/website? If so, it's a good idea to plot a rough sitemap in your brief. How many pages will there be in total? What photography, illustrations or graphics, sales copy, descriptions, or other forms of content are currently available?"
+  },
+  {
+    "id": "section10",
+    "title": "In-house Requirements",
+    "description": "Describe how the app or website will be managed on a day-to-day basis. How regularly will you be updating and adding content? Will any form of data export be required from the app/website? Other than standard Google Analytics, do you need to gather any more on-going data from the site?"
+  },
+  {
+    "id": "section11",
+    "title": "Hosting",
+    "description": "Do you have a hosting plan or plan to purchase a hosting plan for this app/website? Or do you prefer that I take care of the hosting for you at a reasonable fee?"
+  },
+  {
+    "id": "section12",
+    "title": "Support",
+    "description": "Will you need ongoing support and maintenance?"
+  },
+  {
+    "id": "section13",
+    "title": "Target Platforms",
+    "description": "Types of devices: desktop, smartphones, tablets, or all devices. Any platforms such as Amazon Fire TV?"
+  },
+  {
+    "id": "section14",
+    "title": "Database Integration",
+    "description": "Will your website/app need to interact with a database?"
+  },
+  {
+    "id": "section15",
+    "title": "Backend Development",
+    "description": "Will you need me to develop a backend such as a web api?"
+  },
+  {
+    "id": "section16",
+    "title": "Online Marketing",
+    "description": "Digital marketing is absolutely vital to the success of your new app/website. If you already have marketing plans in place, it can be helpful to summarize them."
+  },
+  {
+    "id": "section17",
+    "title": "Deadline",
+    "description": "Do you have a deadline for this project? Bear in mind that I'm a single developer, not an agency with a team, so if your project has a hard deadline that is fast approaching, I may not be the best choice. Otherwise, knowing your deadline will help me determine if I'm able to deliver your project on time."
+  },
+  {
+    "id": "section18",
+    "title": "Measuring Success",
+    "description": "How will you judge the success of the new app/website? Do you have sales or visitor targets?"
+  },
+  {
+    "id": "section19",
+    "title": "Budget",
+    "description": "What is your budget for this project? My minimum fee is $500, but if your budget is less than that I will be happy to try to point you in the right direction. If it's over that, I will try my best to work within your budget."
+  },
+  {
+    "id": "section20",
+    "title": "Upload Files",
+    "description": "Upload any files that you think might clarify your requirements for me. This could be sketches, images, PDFs, Word Docs, etc."
+  }
+]

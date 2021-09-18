@@ -1,0 +1,116 @@
+﻿@page "/services"
+
+@using DaveEvansTech.Components.SVGs
+
+<section id="services" class="bg-gray-100 border-b py-8">
+    <div class="container max-w-5xl mx-auto m-8">
+        <h2 class="w-full my-2 text-3xl md:text-5xl font-black leading-tight text-center text-gray-800 mb-2">
+            My Services
+        </h2>
+        <div class="w-full my-2 text-2xl md:text-3xl px-6 leading-tight text-center text-gray-600 mb-12">
+            Affordable web and mobile app development. Get started for as low as 25% of the total cost.
+        </div>
+        <div id="spa" class="md:mt-6">
+            <Service IllustrationOnRight="@true">
+                <Header>
+                    Single Page Application (SPA)
+                </Header>
+                <Body>
+                <p class="mb-4">
+                    SPAs are web applications that run inside a web browser without requiring page reloads. This makes them feel more like native apps than websites because the web page rendering is so much faster! This results in a stunning user experience for your visitors.
+                </p>
+                <p class="mb-4">
+                    My choice for building SPAs is Microsoft’s framework called Blazor. Blazor is unique because it runs something other than JavaScript (C#) in the web browser. 
+                </p>
+                <p>
+                    Some Single Page Application examples are Gmail, Google Maps, AirBNB, Netflix, Pinterest, Paypal, and many more are using SPAs to build a fluid, scalable experience.
+                </p>
+                </Body>
+                <SVG>
+                    <WebDeveloperSVG/>
+                </SVG>
+            </Service>
+        </div>
+
+        <div id="pwa" class="md:mt-6">
+            <Service IllustrationOnRight="@false">
+                <Header>
+                    Progressive Web Apps (PWA)
+                </Header>
+                <Body>
+                <p class="mb-4">
+                    PWAs bring a native-app-like user experience to cross-platform web applications. It's like supercharging an SPA so it can be installed on any device! Any device that has Internet access and a web browser will allow you to install a PWA. This means you don’t need to go through the hassle (and cost) of adding your app to different app stores. One PWA app can be installed anywhere!
+                </p>
+                <p class="mb-4">
+                    PWAs are smooth, fast, and lightweight. They’re responsive so they look great on different screen sizes. They can run offline. They can leverage push notifications to keep your app users engaged. And PWAs are discoverable via search engines.
+                </p>
+                <p>
+                    Here is a short list of companies already levereaging the super powers of PWAs: Twitter, Starbucks, Pinterest, Uber, Forbes, Flipkart, Alibaba, The Weather Channel, and the Washington Post.
+                </p>
+                </Body>
+                <SVG>
+                    <PWADevSVG/>
+                </SVG>
+            </Service>
+        </div>
+
+
+        <div id="mobile" class="md:mt-6">
+            <Service IllustrationOnRight="@true">
+                <Header>
+                    Mobile Apps (Android/iPhone)
+                </Header>
+                <Body>
+                <p class="mb-4">
+                    My goal is to build Android/iPhone apps that give your app users the best experience possible. I'll utilize the lastest UX (user experience) theory to make sure your app users love your app.
+                </p>
+                <p class="mb-4">
+                    And I'll leverage “cross-platform” capabilities, which saves me development time and therefore saves you money. 
+                    This means I build one app for <span class="italic">both</span> Android and iPhone instead of costly and time-consuming custom native app development for both platforms.
+                </p>
+                <p>
+                    Mobile apps offer many benefits for your business or organization. For one thing, they provide more value to your customers. 
+                    One way to do this is to start a loyalty program through your app. Mobile apps also help you strenghten your brand. 
+                    They help you connect better with your customers.
+                    And perhaps most importantly, they help boost profits!
+                </p>
+                </Body>
+                <SVG>
+                    <MobileDevSVG/>
+                </SVG>
+            </Service>
+        </div>
+
+        <div id="wordpress" class="md:mt-6">
+            <Service IllustrationOnRight="@false">
+                <Header>
+                    WordPress Development
+                </Header>
+                <Body>
+                <p class="mb-4">
+                    An estimated 35% of the gazillion websites on the web were built using WordPress (what is 35% of a gazillion?). WordPress is used to build virtually any type of website &mdash; eCommerce, blogs, promotional, content management system, religious, online communities, niche affiliate websites, online courses and many more.
+                </p>
+                <p class="mb-4">
+                    Hiring a web design agency can cost anywhere from $2,000 to $25,000, depending on the features you require.
+                    This is fine for big companies with fat bank accounts. 
+                    But for smaller companies, organizations, and individuals that are working with a tight budget, WordPress development might be the better choice.
+                </p>
+                <p>
+                    Contact me today and tell me about the website you want. I'll be glad to help you decide if WordPress is the right choice for you.
+                </p>
+                </Body>
+                <SVG>
+                    <WordPressDevSVG/>
+                </SVG>
+            </Service>
+        </div>
+
+
+    </div>
+</section>
+
+
+@code {
+
+
+}

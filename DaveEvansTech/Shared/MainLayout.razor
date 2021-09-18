@@ -1,0 +1,73 @@
+﻿
+@using Syncfusion.Blazor.Notifications
+@using DaveEvansTech.Models
+@using System.Security.Claims
+@using DaveEvansTech.Contracts
+
+@inherits LayoutComponentBase
+
+
+<BlazoredToasts IconType="IconType.FontAwesome"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug"
+                InfoIcon="fa fa-info-circle"
+                WarningIcon="fas fa-exclamation-triangle" />
+
+
+<div class="flex flex-col min-h-screen">
+    <CascadingValue Value="_client">
+        <NavMenu />
+    </CascadingValue>
+
+    <div class="p-4">
+        @Body
+    </div>
+
+    <Footer></Footer>
+</div>
+
+
+<style>
+    .blazored-toast-container {
+        z-index: 99999;
+    }
+</style>
+
+
+@code {
+
+    private ClientModel _client;
+    ClaimsPrincipal _user;
+
+    private string _surnameMessage;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //if (_user == null)
+        //    await GetClaimsPrincipalData();
+        //if (_client == null)
+        //    if (_user?.Identity != null) _client = await Repository.GetClientByEmail(_user.Identity.Name);
+    }
+
+    private async Task GetClaimsPrincipalData()
+    {
+        //var authState = await AuthState.GetAuthenticationStateAsync();
+        //_user = authState.User;
+
+        //user.Claims
+        // if (_user.Identity != null && _user.Identity.IsAuthenticated)
+        // {
+        //     //_authMessage = $"{user.Identity.Name} is authenticated.";
+        //     _claims = _user.Claims;
+        //     _surnameMessage =
+        //         $"Surname: {_user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value}";
+        // }
+        // else
+        // {
+        //    // _authMessage = "The user is NOT authenticated.";
+        // }
+    }
+
+}

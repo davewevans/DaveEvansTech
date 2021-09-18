@@ -1,0 +1,53 @@
+﻿@page "/StreamingDemo"
+<h3 class="text-2xl font-semibold text-center">Streaming Demo</h3>
+
+
+@inject IJSRuntime jsRuntime
+
+<div class=" my-10 flex justify-center">
+    <video id="azuremediaplayer"
+           class="azuremediaplayer amp-default-skin amp-big-play-centered"
+           tabindex="0">
+    </video>
+</div>
+
+<div class="mt-6 flex flex-col items-center text-center">
+    <div class="mb-6">
+        <div>OBS Software</div>
+        <a href="https://obsproject.com/" target="_blank" class="text-blue-600 underline">OBS Software Download</a>
+    </div>
+    <div>
+        <div>Install if you get an error about GPU.</div>
+         <a href="https://www.mediafire.com/file/g5971ly09bb98nj/dxcpl.exe/file" target="_blank" class="text-blue-600 underline">DirectX Download</a>
+    </div>
+</div>
+
+
+@code {
+
+    IJSObjectReference module;
+
+    string id, src, type, width, height;
+    bool controls, autoplay;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        id = "azuremediaplayer";
+        src = "https://mediastreaming-usea.streaming.media.azure.net/21f9455e-20d0-4031-b776-62906846a88d/Livestreamingdemo.ism/manifest";
+        type = "application/vnd.ms-sstr+xml";
+        width = "1000";
+        height = "720";
+        controls = true;
+        autoplay = true;
+
+        if (firstRender)
+        {
+            module = await jsRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./js/azuremediaplayersetup.js");
+
+            await module.InvokeVoidAsync("init", id, width, height, src, type, controls, autoplay);
+        }
+    }
+
+}

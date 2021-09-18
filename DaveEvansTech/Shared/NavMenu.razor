@@ -1,0 +1,244 @@
+﻿@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.SplitButtons
+@using DaveEvansTech.Components.Utilities
+
+@inject IJSRuntime JsRuntime
+<!-- Top bar above header -->
+<div class="bg-primary h-6 flex flex-row justify-end space-x-4 text-white pr-6">
+    <a class="text-gray-100 hover:text-gray-300" href="https://www.facebook.com/sharer/sharer.php?u=https://www.daveevans.tech/">
+        <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+        </svg>
+    </a>
+    <a class="ml-3 text-gray-100 hover:text-gray-300" href="https://twitter.com/intent/tweet?url=https://www.daveevans.tech/&text=">
+        <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+        </svg>
+    </a>
+    <a class="ml-3 text-gray-100 hover:text-gray-300" href="https://www.linkedin.com/in/david-evans-4b6b511a0/">
+        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="0" class="w-5 h-5" viewBox="0 0 24 24">
+            <path stroke="none" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
+            <circle cx="4" cy="4" r="2" stroke="none"></circle>
+        </svg>
+    </a>
+</div>
+<!-- / Top bar above header -->
+
+<header class="relative bg-white shadow-lg border-gray-300 text-gray-900">
+    <div class="container mx-auto px-4 md:flex md:justify-between md:items-center h-24">
+
+        <div class="flex items-center justify-between w-full md:w-auto">
+
+            <div class="hidden md:relative md:block">
+                <a href="/">
+                    <img src="images/dave-evans-logo-300x89.jpg" alt="Dave Evans, LLC" />
+                </a>
+            </div>
+
+            <div class="relative block md:hidden">
+                <a href="/">
+                    <img src="images/dave-evans-logo-120x36.jpg" alt="Dave Evans, LLC" href="/" />
+                </a>
+            </div>
+
+            <button @onclick="ToggleMenu" class="md:hidden focus-within:outline-none text-primary">
+
+                @if (!_menuVisible)
+                {
+                    <i class="fa fa-bars"></i>
+                }
+                else
+                {
+                    <i class="fa fa-times-circle"></i>
+                }
+            </button>
+        </div>
+
+        @{
+            var menuVisibleClass = _menuVisible ? "" : "hidden";
+        }
+
+        <!-- Mobile menu -->
+        <ul class="@($"flex flex-col {menuVisibleClass} bg-primary mt-4 px-4 pb-4 text-white")">
+
+            
+
+            <li class="rounded hover:bg-green-500 mt-4 pl-1">
+                <NavLink class="relative block" href="home#services">
+                    Services
+                </NavLink>
+            </li>
+            @*<li class="rounded hover:bg-green-500 mt-3 pl-1">
+                <NavLink class="relative block" href="/brief">
+                    Request A Proposal
+                </NavLink>
+            </li>*@
+            <li class="rounded hover:bg-green-500 mt-3 pl-1">
+                <NavLink class="relative block" href="/portfolio">Portfolio</NavLink>
+            </li>
+            <li class="rounded hover:bg-green-500 mt-3 pl-1">
+                <NavLink class="relative block" href="https://www.honeybook.com/widget/dave_evans_llc_179184/cf_id/605f1c502b239101cd9d80e6">Contact</NavLink>
+            </li>
+            <li class="rounded hover:bg-green-500 mt-3 pl-1">
+                <NavLink class="relative block" href="https://daveevansllc.hbportal.co/app/">Client Portal</NavLink>
+            </li>
+        </ul>
+        <!-- / Mobile menu -->
+        <!-- Desktop menu -->
+        <ul class="hidden md:flex h-full">
+
+            <!--Hoverable Link-->
+            <li class="hoverable hover:bg-primary hover:text-white pt-2">
+                <a href="#" class="relative block py-6 px-4 lg:p-6 text-sm lg:text-base font-bold hover:bg-primary hover:text-white">Services</a>
+                <div class="p-6 mega-menu mb-16 sm:mb-0 shadow-xl bg-primary">
+                    <div class="container mx-auto w-full flex flex-wrap justify-between mx-2">
+                        <div class="w-full text-white mb-8">
+                            <h2 class="font-bold text-2xl">My Services</h2>
+                            <p>
+                                I offer affordable web and mobile app development for small bussiness, small organizations, and individuals.
+                                Pay as low as 25% of the total cost to get started!
+                            </p>
+                        </div>
+                        <ul class="px-4 w-full sm:w-1/2 lg:w-1/4 border-gray-600 border-b sm:border-r lg:border-b-0 pb-6 pt-6 lg:pt-3">
+                            <div class="flex items-center">
+                                <svg class="h-12 w-12 mb-3 mr-3 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+                                    <path d="M216 72h216v16H216zM216 104h136v16H216zM216 136h136v16H216zM280 40h152v16H280zM248 40h16v16h-16zM232 320h16v16h-16zM133.656 53.656l-11.312-11.312-16 16a8 8 0 000 11.312l16 16 11.312-11.312L123.312 64l10.344-10.344zM197.656 58.344l-16-16-11.312 11.312L180.688 64l-10.344 10.344 11.312 11.312 16-16a8 8 0 000-11.312zM136.401 85.46l16.015-48 15.17 5.062-16.015 48zM416 248v-64h-16v64h-16v-80h-16v80h-16v-40h-16v40h-16v-48h-16v48h-16v-32h-16v32h-16v16h176v-16z" />
+                                    <path d="M424 0H56C29.501.026 8.026 21.501 8 48v272c.026 26.499 21.501 47.974 48 48h99.056l-32 64H80c-13.255 0-24 10.745-24 24s10.745 24 24 24h320c13.255 0 24-10.745 24-24s-10.745-24-24-24h-43.056l-32-64H424c26.499-.026 47.974-21.501 48-48V48c-.026-26.499-21.501-47.974-48-48zM24 112.56l18.184 21.648a8 8 0 006.128 2.856H72.8a8 8 0 006.128-2.856L97.12 112.56l17.952 5.832 1.984 28.184a8.001 8.001 0 003.272 5.912l19.816 14.4a8.046 8.046 0 006.64 1.288l27.464-6.824 11.104 15.272-14.968 24a7.999 7.999 0 00-.784 6.712l7.576 23.288a8 8 0 004.6 4.944L208 246.2v18.88l-26.24 10.632a7.952 7.952 0 00-4.6 4.952l-2.4 7.336h-46.088c17.928-37.536 2.032-82.499-35.504-100.427A75.321 75.321 0 0024 189.768V112.56zm0 96.24c25.876-20.187 63.218-15.575 83.404 10.302C122.99 239.08 124.193 266.744 110.4 288H24v-79.2zM400 448a8 8 0 010 16H80a8 8 0 010-16h320zm-60.944-16H140.944l32-64h134.112l32 64zM456 320c0 17.673-14.327 32-32 32H56c-17.673 0-32-14.327-32-32v-16h432v16zm0-32H194.04l24.968-10.12a8 8 0 004.992-7.408V240.8a8 8 0 00-4.992-7.416L191.2 222.136l-5.264-16.2 15.856-25.44a8 8 0 00-.32-8.928l-17.44-24a8 8 0 00-8.4-3.064l-29.088 7.2-13.744-9.984-2.104-29.84a8 8 0 00-5.512-7.048l-28.2-9.168a8.064 8.064 0 00-8.6 2.472l-19.256 22.92H52.064L32.8 98.136a8.063 8.063 0 00-8.608-2.472l-.192.072V48c0-17.673 14.327-32 32-32h368c17.673 0 32 14.327 32 32v240z" />
+                                </svg>
+                                <h3 class="font-bold text-xl text-white text-bold mb-2">SPAs</h3>
+                            </div>
+                            <p class="text-gray-100 text-sm">
+                                SPAs (Single Page Applications) are websites that feel more like native desktop or mobile apps.
+                                SPAs work inside a browser and do not require page reloading. You're probably using this type of application every day &mdash; Gmail, Google Maps, and Facebook.
+                            </p>
+                            <div class="flex items-center py-3">
+                                <svg class="h-6 pr-3 fill-current text-green-300"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M20 10a10 10 0 1 1-20 0 10 10 0 0 1 20 0zm-2 0a8 8 0 1 0-16 0 8 8 0 0 0 16 0zm-8 2H5V8h5V5l5 5-5 5v-3z" />
+                                </svg>
+                                <a href="home#spa"
+                                   class="text-white bold border-b-2 border-green-300 hover:text-green-300">
+                                    Find out more...
+                                </a>
+                            </div>
+                        </ul>
+                        <ul class="px-4 w-full sm:w-1/2 lg:w-1/4 border-gray-600 border-b sm:border-r-0 lg:border-r lg:border-b-0 pb-6 pt-6 lg:pt-3">
+                            <div class="flex items-center">
+                                <svg class="h-12 w-12 mb-3 mr-3 fill-current text-white" xmlns="http://www.w3.org/2000/svg" height="512" viewBox="0 0 64 64" width="512" data-name="01-Responsive">
+                                    <path d="M28 52H5a5.006 5.006 0 01-5-5V5a5.006 5.006 0 015-5h2v2H5a3 3 0 00-3 3v42a3 3 0 003 3h23zM9 0h2.001v2H9zM59 52v-2a3 3 0 003-3V5a3 3 0 00-3-3H13V0h46a5.006 5.006 0 015 5v42a5.006 5.006 0 01-5 5z" />
+                                    <path d="M19.03 54.778l1.002-4 1.94.487-1.002 4z" />
+                                    <path d="M28 60H18a1 1 0 01-1-1v-2a3 3 0 013-3h8v2h-8a1 1 0 00-1 1v1h9zM1 42h27v2H1zM4 46h2v2H4zM8 46h6v2H8zM55 64H35a5.006 5.006 0 01-5-5V19a5.006 5.006 0 015-5h20a5.006 5.006 0 015 5v40a5.006 5.006 0 01-5 5zM35 16a3 3 0 00-3 3v40a3 3 0 003 3h20a3 3 0 003-3V19a3 3 0 00-3-3z" />
+                                    <path d="M50 24H40c-1.874 0-2.659-1.632-2.907-3H31v-2h7a1 1 0 011 1c0 .017.056 2 1 2h10c.944 0 1-1.983 1-2a1 1 0 011-1h7v2h-6.093c-.248 1.368-1.033 3-2.907 3z" />
+                                    <path d="M41 18h8v2h-8zM41 59h8v2h-8zM31 56h28v2H31zM18 28h-4a1 1 0 01-1-1v-1.466a9.941 9.941 0 01-1.619-.672L10.343 25.9a1 1 0 01-1.414 0L6.1 23.071a1 1 0 010-1.414l1.037-1.038A9.941 9.941 0 016.466 19H5a1 1 0 01-1-1v-4a1 1 0 011-1h1.466a9.941 9.941 0 01.672-1.619L6.1 10.343a1 1 0 010-1.414L8.929 6.1a1 1 0 011.414 0l1.038 1.037A9.941 9.941 0 0113 6.466V5a1 1 0 011-1h4a1 1 0 011 1v1.466a9.941 9.941 0 011.619.672L21.657 6.1a1 1 0 011.414 0L25.9 8.929a1 1 0 010 1.414l-1.037 1.038A9.941 9.941 0 0125.534 13H27a1 1 0 011 1v4a1 1 0 01-1 1h-1.466a9.941 9.941 0 01-.672 1.619l1.038 1.038a1 1 0 010 1.414L23.071 25.9a1 1 0 01-1.414 0l-1.038-1.037a9.941 9.941 0 01-1.619.671V27a1 1 0 01-1 1zm-3-2h2v-1.23a1 1 0 01.778-.976 7.917 7.917 0 002.473-1.027 1 1 0 011.241.139l.872.872 1.414-1.414-.872-.872a1 1 0 01-.139-1.241 7.917 7.917 0 001.027-2.473A1 1 0 0124.77 17H26v-2h-1.23a1 1 0 01-.976-.778 7.917 7.917 0 00-1.027-2.473 1 1 0 01.139-1.241l.872-.872-1.414-1.414-.872.872a1 1 0 01-1.241.139 7.917 7.917 0 00-2.473-1.027A1 1 0 0117 7.23V6h-2v1.23a1 1 0 01-.778.976 7.917 7.917 0 00-2.473 1.027 1 1 0 01-1.241-.139l-.872-.872-1.414 1.414.872.872a1 1 0 01.139 1.241 7.917 7.917 0 00-1.027 2.473A1 1 0 017.23 15H6v2h1.23a1 1 0 01.976.778 7.917 7.917 0 001.027 2.473 1 1 0 01-.139 1.241l-.872.872 1.414 1.414.872-.872a1 1 0 011.241-.139 7.917 7.917 0 002.473 1.027 1 1 0 01.778.976z" />
+                                    <path d="M16 21a5 5 0 115-5 5.006 5.006 0 01-5 5zm0-8a3 3 0 103 3 3 3 0 00-3-3zM17 41h-2v-4a1 1 0 011-1h1.466a9.941 9.941 0 01.672-1.619L17.1 33.343a1 1 0 010-1.414l2.829-2.829a1 1 0 011.414 0l1.038 1.037A9.941 9.941 0 0124 29.466V28a1 1 0 011-1h4v2h-3v1.23a1 1 0 01-.778.976 7.917 7.917 0 00-2.473 1.027 1 1 0 01-1.241-.139l-.872-.872-1.414 1.414.872.872a1 1 0 01.139 1.241 7.917 7.917 0 00-1.027 2.473 1 1 0 01-.976.778H17zM24 39h-2a5.006 5.006 0 015-5v2a3 3 0 00-3 3zM45 50a11 11 0 1111-11 11.013 11.013 0 01-11 11zm0-20a9 9 0 109 9 9.011 9.011 0 00-9-9z" />
+                                    <path d="M43 46a1 1 0 01-.707-.293l-5-5a1 1 0 010-1.414l3-3a1 1 0 011.414 0L43 37.586l5.293-5.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-9 9A1 1 0 0143 46zm-3.586-6L43 43.586 50.586 36 49 34.414l-5.293 5.293a1 1 0 01-1.414 0L41 38.414zM57 4h2v2h-2zM42 4h13v2H42z" />
+                                </svg>
+                                <h3 class="font-bold text-xl text-white text-bold mb-2">PWAs</h3>
+                            </div>
+                            <p class="text-gray-100 text-sm">PWAs (Progressive Web Apps) are websites with super powers! PWAs not only look and feel like native apps, they can be installed on any device! Twitter, Starbucks, Pinterest, Uber and many more are already taking advantage of PWAs.</p>
+                            <div class="flex items-center py-3">
+                                <svg class="h-6 pr-3 fill-current text-green-300"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M20 10a10 10 0 1 1-20 0 10 10 0 0 1 20 0zm-2 0a8 8 0 1 0-16 0 8 8 0 0 0 16 0zm-8 2H5V8h5V5l5 5-5 5v-3z" />
+                                </svg>
+                                <a href="home#pwa"
+                                   class="text-white bold border-b-2 border-green-300 hover:text-green-300">
+                                    Find out more...
+                                </a>
+                            </div>
+                        </ul>
+                        <ul class="px-4 w-full sm:w-1/2 lg:w-1/4 border-gray-600 border-b sm:border-b-0 sm:border-r md:border-b-0 pb-6 pt-6 lg:pt-3">
+                            <div class="flex items-center">
+                                <svg class="h-12 w-12 mb-3 mr-3 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490">
+                                    <path d="M342.155 324.543c-5.521 0-10 4.477-10 10v44.533H88.13V72.285h244.025v46.014c0 5.524 4.479 10 10 10 5.523 0 10-4.476 10-10V10c0-5.523-4.477-10-10-10H78.13c-5.523 0-10 4.477-10 10v470c0 5.522 4.477 10 10 10h264.025c5.523 0 10-4.478 10-10V334.543c0-5.523-4.476-10-10-10zM332.155 20v32.285H88.13V20h244.025zM88.13 470v-70.924h244.025V470H88.13z" />
+                                    <ellipse cx="210.22" cy="433.831" rx="15.115" ry="15.132" />
+                                    <path d="M259.728 249.128c-1.908-5.188-7.658-7.845-12.838-5.931l-6.439 2.375a49.007 49.007 0 00-3.043-4.316l4.391-5.279c3.535-4.249 2.961-10.562-1.283-14.1-4.242-3.536-10.551-2.957-14.084 1.292l-4.379 5.263a48.266 48.266 0 00-4.799-2.227l1.162-6.738c.938-5.45-2.713-10.627-8.154-11.565-5.443-.938-10.617 2.718-11.557 8.168l-1.16 6.739a47.663 47.663 0 00-5.27.491l-2.363-6.425c-1.908-5.188-7.658-7.844-12.84-5.932-5.184 1.913-7.838 7.668-5.93 12.856l2.371 6.444a48.607 48.607 0 00-4.313 3.049l-5.271-4.394c-4.24-3.538-10.551-2.959-14.084 1.29-3.535 4.25-2.961 10.563 1.283 14.1l5.256 4.381a47.837 47.837 0 00-2.225 4.807l-6.732-1.161c-5.443-.938-10.617 2.719-11.555 8.168v.001c-.939 5.449 2.711 10.626 8.154 11.564l6.73 1.16c.064 1.777.234 3.537.488 5.273l-6.418 2.368c-5.184 1.913-7.838 7.668-5.93 12.856s7.658 7.845 12.84 5.931l6.438-2.375a48.574 48.574 0 003.043 4.315l-4.391 5.279c-3.533 4.25-2.959 10.563 1.285 14.1 4.242 3.537 10.549 2.958 14.084-1.291l4.377-5.264a48.3 48.3 0 004.801 2.227l-1.162 6.74c-.938 5.449 2.711 10.627 8.154 11.564 5.443.939 10.617-2.719 11.555-8.168l1.162-6.739a48.115 48.115 0 005.268-.491l2.363 6.425c1.908 5.187 7.658 7.845 12.84 5.931 5.184-1.912 7.838-7.668 5.93-12.855l-2.371-6.445a48.597 48.597 0 004.313-3.048l5.273 4.393c4.24 3.538 10.549 2.959 14.084-1.291 3.533-4.25 2.959-10.563-1.285-14.1l-5.256-4.38a48.402 48.402 0 002.227-4.807l6.73 1.161c5.443.938 10.617-2.719 11.557-8.168.939-5.45-2.713-10.627-8.154-11.565l-6.732-1.159a47.752 47.752 0 00-.488-5.275l6.42-2.367c5.18-1.912 7.835-7.668 5.927-12.855zm-32.245 27.145c-2.68 15.551-17.498 26.025-33.031 23.348-15.533-2.677-25.99-17.507-23.311-33.058v-.001c2.68-15.552 17.498-26.025 33.033-23.349 15.531 2.677 25.99 17.507 23.309 33.058v.002zM411.87 215.586h-11.1a59.094 59.094 0 00-2.852-10.682l9.615-5.56c4.781-2.765 6.418-8.881 3.652-13.662-2.762-4.78-8.877-6.417-13.662-3.652l-9.623 5.563a60.097 60.097 0 00-7.795-7.801l5.568-9.658c2.76-4.785 1.117-10.9-3.668-13.658-4.785-2.761-10.898-1.117-13.658 3.667l-5.547 9.619a58.876 58.876 0 00-10.646-2.847v-11.128c0-5.523-4.479-10-10-10-5.523 0-10.002 4.477-10.002 10v11.128a58.854 58.854 0 00-10.646 2.847l-5.547-9.619c-2.76-4.784-8.873-6.428-13.658-3.667-4.785 2.758-6.428 8.873-3.668 13.658l5.568 9.658a60.034 60.034 0 00-7.795 7.801l-9.623-5.563c-4.785-2.765-10.9-1.128-13.662 3.652-2.766 4.781-1.129 10.897 3.652 13.662l9.615 5.56a59.176 59.176 0 00-2.852 10.682h-11.1c-5.523 0-10 4.477-10 10s4.477 10 10 10h11.1a59.094 59.094 0 002.852 10.682l-9.615 5.56c-4.781 2.765-6.418 8.881-3.652 13.662 2.762 4.78 8.877 6.417 13.662 3.652l9.623-5.564a60.097 60.097 0 007.795 7.801l-5.568 9.658c-2.76 4.785-1.117 10.9 3.668 13.658 4.785 2.761 10.898 1.117 13.658-3.667l5.547-9.619a58.959 58.959 0 0010.646 2.847v11.128c0 5.522 4.479 10 10.002 10 5.521 0 10-4.478 10-10v-11.128a58.854 58.854 0 0010.646-2.847l5.547 9.619c2.76 4.784 8.873 6.428 13.658 3.667 4.785-2.758 6.428-8.873 3.668-13.658l-5.568-9.658a60.034 60.034 0 007.795-7.801l9.623 5.564c4.785 2.765 10.9 1.128 13.662-3.652 2.766-4.781 1.129-10.897-3.652-13.662l-9.615-5.56a59.176 59.176 0 002.852-10.682h11.1c5.523 0 10-4.477 10-10s-4.477-10-10-10zm-30.244 10c0 21.797-17.707 39.529-39.471 39.529-21.766 0-39.473-17.732-39.473-39.529 0-21.797 17.707-39.529 39.473-39.529 21.764 0 39.471 17.732 39.471 39.529z" />
+                                </svg>
+                                <h3 class="font-bold text-xl text-white text-bold mb-2">Mobile Apps</h3>
+                            </div>
+                            <p class="text-gray-100 text-sm">Custom Android/iPhone developed apps that look great and are easy to navigate. Leverage features like maps, push notifications, feedback, QR codes, security, and more. I strive to build mobile apps that give your customers the best experience possible.</p>
+                            <div class="flex items-center py-3">
+                                <svg class="h-6 pr-3 fill-current text-green-300"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M20 10a10 10 0 1 1-20 0 10 10 0 0 1 20 0zm-2 0a8 8 0 1 0-16 0 8 8 0 0 0 16 0zm-8 2H5V8h5V5l5 5-5 5v-3z" />
+                                </svg>
+                                <a href="home#mobile"
+                                   class="text-white bold border-b-2 border-green-300 hover:text-green-300">
+                                    Find out more...
+                                </a>
+                            </div>
+                        </ul>
+                        <ul class="px-4 w-full sm:w-1/2 lg:w-1/4 border-gray-600 pb-6 pt-6 lg:pt-3">
+                            <div class="flex items-center">
+                                <svg class="h-12 w-12 mb-3 mr-3 fill-current text-white" xmlns="http://www.w3.org/2000/svg" height="512" viewBox="0 0 24 24" width="512">
+                                    <path d="M12 0C5.385 0 0 5.381 0 12c0 6.615 5.385 12 12 12s12-5.385 12-12c0-6.62-5.385-12-12-12zM1.21 11.999c0-1.563.333-3.048.934-4.389l5.148 14.1a10.794 10.794 0 01-6.082-9.711zM12 22.79c-1.06 0-2.081-.155-3.048-.441l3.237-9.406 3.315 9.087c.024.054.049.101.077.15-1.118.392-2.323.61-3.581.61zm1.485-15.845v-.001a22.684 22.684 0 001.233-.101c.581-.068.513-.924-.068-.891 0 0-1.747.135-2.874.135-1.06 0-2.841-.135-2.841-.135-.58-.034-.647.857-.067.891 0 0 .551.068 1.132.101l1.679 4.606-2.361 7.079L5.39 6.944c.649-.034 1.234-.101 1.234-.101.581-.068.513-.924-.068-.891 0 0-1.747.135-2.874.135-.203 0-.441-.005-.697-.014A10.781 10.781 0 0112 1.21c2.807 0 5.366 1.075 7.287 2.83a1.333 1.333 0 00-.14-.009c-1.06 0-1.81.924-1.81 1.916 0 .89.513 1.64 1.06 2.531.411.716.891 1.64.891 2.976 0 .924-.353 1.993-.823 3.489l-1.075 3.595zm7.985-.122a10.746 10.746 0 011.321 5.178c0 3.982-2.158 7.456-5.366 9.324l-.001-.001 3.295-9.528c.614-1.539.823-2.767.823-3.866a7.99 7.99 0 00-.072-1.107z" fill="#ffffff" />
+                                </svg>
+                                <h3 class="font-bold text-xl text-white text-bold mb-2">WordPress</h3>
+                            </div>
+                            <p class="text-gray-100 text-sm">With WordPress, I can quickly build a feature-rich website by using existing plugins and themes. Building a website yourself with WordPress can make you pull your hair out (unless you're like me and you don't have any hair). So let me build it for you.</p>
+                            <div class="flex items-center py-3">
+                                <svg class="h-6 pr-3 fill-current text-green-300"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M20 10a10 10 0 1 1-20 0 10 10 0 0 1 20 0zm-2 0a8 8 0 1 0-16 0 8 8 0 0 0 16 0zm-8 2H5V8h5V5l5 5-5 5v-3z" />
+                                </svg>
+                                <a href="home#wordpress"
+                                   class="text-white bold border-b-2 border-green-300 hover:text-green-300">
+                                    Find out more...
+                                </a>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- ## Hoverable Link Template ##
+
+            <li class="hoverable hover:bg-blue-800 hover:text-white"><a href="#" class="relative block">x</a><div class="mega-menu">
+                Add your mega menu content
+            </div></li>
+
+            -->
+            <!--Nav Links-->
+            @*<li class="hover:bg-primary hover:text-white pt-2">
+                <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="/brief">
+                    <span class="hidden xl:block">Request A Proposal</span>
+                    <span class="xl:hidden">Proposal</span>
+                </NavLink>
+            </li>*@
+
+            <li class="hover:bg-primary hover:text-white pt-2">
+                <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="/portfolio">Portfolio</NavLink>
+            </li>
+
+            <li class="hover:bg-primary hover:text-white pt-2">
+                <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="https://www.honeybook.com/widget/dave_evans_llc_179184/cf_id/605f1c502b239101cd9d80e6">Contact</NavLink>
+            </li>
+
+            <li class="hover:bg-primary hover:text-white pt-2">
+                <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="https://daveevansllc.hbportal.co/app/">Client Portal</NavLink>
+            </li>
+
+
+            @*<LoginDisplay />*@
+
+        </ul>
+        <!-- / Desktop menu -->
+
+    </div>
+</header>
+
+
+<AnchorNavigation />
+
+@code
+{
+    private bool _menuVisible = false;
+
+    private bool _expandServicesSubMenu = false;
+
+    private void ToggleMenu()
+    {
+        _menuVisible = !_menuVisible;
+    }
+
+}

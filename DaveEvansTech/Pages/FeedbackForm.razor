@@ -1,0 +1,229 @@
+﻿@page "/Feedback"
+
+@using DaveEvansTech.Components.Sections
+@using DaveEvansTech.Contracts
+@using DaveEvansTech.Models
+@using DaveEvansTech.Components.UIComponents
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Logging
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+
+@inject IAppToastService AppToastService
+@inject IPostmarkEmailSender EmailSender
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IRepository Repository
+@inject ILogger<ContactForm> Logger
+@inject IConfiguration Configuration
+@inject IFileStorageService FileStorageService
+
+
+
+<div class="mx-auto md:ml-80 md:mr-80 2xl:ml-96 2xl:mr-96 mt-10 rounded-2xl shadow-lg bg-green-100">
+    <div class="container w-full flex-col mx-auto px-4 pt-8 space-y-6">
+
+        @if (!_formSent)
+        {
+            <div class="flex flex-row justify-center space-x-2">
+                <div class="p-6 mb-6 font-semibold font-sans text-2xl text-center">
+                    Feedback
+                </div>
+                <div>
+                 <svg xmlns="http://www.w3.org/2000/svg" id="svg8" version="1.1" width="64" viewBox="0 0 64 64" height="64">
+                   <path id="path4" d="M59.438 47.292c-.251-1.446-1.357-2.619-2.775-3.08.57-.858.788-1.91.601-2.949C56.922 39.372 55.206 38 53.183 38H47.33v-6c0-2.206-1.795-4-4-4-2.206 0-4 1.794-4 4v6.024a6.444 6.444 0 00-4.096 1.879 6.452 6.452 0 00-1.903 4.597v13c0 3.584 2.916 6.5 6.5 6.5h10.5c2.017 0 3.783-1.415 4.109-3.292a4.034 4.034 0 00-.515-2.776c1.684-.304 3.062-1.589 3.345-3.224a4.032 4.032 0 00-.583-2.887 3.995 3.995 0 001.876-1.247 4.017 4.017 0 00.875-3.282zM43.33 30c1.103 0 2 .897 2 2v6h-4v-6c0-1.103.897-2 2-2zm13.701 19.286A1.994 1.994 0 0155.5 50H44.268a1 1 0 100 2h9.062c.592 0 1.15.26 1.531.714.387.459.542 1.046.437 1.652-.161.932-1.08 1.634-2.138 1.634h-8.83a1 1 0 100 2h6.17c.592 0 1.15.26 1.531.713.387.46.542 1.047.437 1.653-.161.932-1.08 1.634-2.138 1.634h-10.5a4.505 4.505 0 01-4.5-4.5v-13c0-1.202.468-2.332 1.317-3.183A4.47 4.47 0 0139.829 40h13.353c1.038 0 1.946.695 2.113 1.618.11.609-.043 1.2-.43 1.663A1.994 1.994 0 0153.33 44h-9a1 1 0 100 2h11c1.057 0 1.976.702 2.138 1.634a1.993 1.993 0 01-.437 1.652zM24.17 28h-10.5c-2.017 0-3.783 1.415-4.109 3.292a4.034 4.034 0 00.515 2.776c-1.684.304-3.062 1.589-3.345 3.224a4.032 4.032 0 00.583 2.887 3.995 3.995 0 00-1.876 1.247 4.015 4.015 0 00-.877 3.282c.251 1.446 1.357 2.619 2.775 3.08a4.027 4.027 0 00-.601 2.949C7.078 52.628 8.794 54 10.817 54h5.853v6c0 2.206 1.795 4 4 4 2.206 0 4-1.794 4-4v-6.024a6.442 6.442 0 004.096-1.88 6.45 6.45 0 001.903-4.596l.001-13c0-3.584-2.916-6.5-6.5-6.5zm-3.5 34c-1.103 0-2-.897-2-2v-6h4v6c0 1.103-.897 2-2 2zm7.999-14.5a4.474 4.474 0 01-1.317 3.182A4.47 4.47 0 0124.17 52H10.817c-1.038 0-1.946-.695-2.113-1.618-.11-.609.043-1.2.43-1.663A1.998 1.998 0 0110.67 48h9a1 1 0 100-2h-11c-1.057 0-1.976-.702-2.138-1.634a1.993 1.993 0 01.437-1.652A1.994 1.994 0 018.5 42h11.232a1 1 0 100-2H10.67c-.592 0-1.15-.26-1.531-.714a1.993 1.993 0 01-.437-1.652C8.863 36.702 9.782 36 10.84 36h8.83a1 1 0 100-2H13.5c-.592 0-1.15-.26-1.531-.713a1.996 1.996 0 01-.437-1.653c.161-.932 1.08-1.634 2.138-1.634h10.5c2.481 0 4.5 2.019 4.5 4.5zm15.387-34.944C44.056 5.633 38.423 0 31.5 0S18.944 5.633 18.944 12.556c0 5.766 3.833 10.697 9.374 12.14l2.327 3.824a1.002 1.002 0 001.709 0l2.327-3.824c5.542-1.443 9.375-6.375 9.375-12.14zM33.188 23.302L31.5 26.076l-1.689-2.774a.997.997 0 00-.635-.456 10.49 10.49 0 01-8.233-10.29C20.944 6.735 25.68 2 31.5 2s10.556 4.735 10.556 10.556a10.49 10.49 0 01-8.232 10.29.998.998 0 00-.636.456z"/>
+                   <path id="path6" d="M28.611 10h5.777a1 1 0 100-2h-5.777a1 1 0 100 2zm8.667 2H25.722a1 1 0 100 2h11.556a1 1 0 100-2zm0 4H25.722a1 1 0 100 2h11.556a1 1 0 100-2z"/>
+                 </svg>
+                </div>
+            </div>
+           
+
+            <EditForm Model="@_feedback"
+                      class="max-w-lg mx-auto"
+                      OnValidSubmit="HandleValidSubmit"
+                      OnInvalidSubmit="HandleInvalidSubmit">
+                <DataAnnotationsValidator/>
+
+
+                <div class="w-full md:w-1/2 px-3 mb-10">
+                    <InputLabel For="Name">Name</InputLabel>
+                    <InputText id="Name" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white border-gray-200" type="text" placeholder=""
+                               @bind-Value="_feedback.Name"/>
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _feedback.Name)"/>
+                    </p>
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-10">
+                    <InputLabel For="Company">Company/Organization/Individual</InputLabel>
+                    <InputText id="Company" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder=""
+                               @bind-Value="_feedback.Company"/>
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _feedback.Company)"/>
+                    </p>
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-10">
+                    <InputLabel For="Title">Title</InputLabel>
+                    <InputText id="Title" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder=""
+                               @bind-Value="_feedback.Title"/>
+                    <p class="text-red-500 text-xs italic">
+                        <ValidationMessage For="@(() => _feedback.Title)"/>
+                    </p>
+                </div>
+
+
+                <div class="flex flex-wrap -mx-2 mb-6">
+                    <div class="w-full px-3">
+                        <InputLabel For="Message">Message</InputLabel>
+                        <InputTextArea class="no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none"
+                                       id="Message"
+                                       @bind-Value="_feedback.Message">
+                        </InputTextArea>
+                        <p class="text-red-500 text-xs italic">
+                            <ValidationMessage For="@(() => _feedback.Message)"/>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-row mb-6 ml-2 items-center space-x-2">
+                    <SfCheckBox @bind-Checked="@_feedback.PermissionForPromoUse"
+                                 Label="Permission to use your feedback for promotional purposes."
+                                 CssClass="e-primary">
+                    </SfCheckBox>
+                </div>
+
+                <div class="mb-6 bg-green-100 p-6">
+                    <!-- Upload files -->
+                    <InputLabel For="UploadFile">Upload a profile image to go with your feedback (optional, but would help me in selling my services)</InputLabel>
+                    <div ID="DropArea">
+                        Drop file here to upload
+                    </div>
+                    <SfUploader ID="UploadFiles"
+                                DropArea="#DropArea"
+                                MaxFileSize="104857600"
+                                AllowedExtensions=".png, .jpg, .jpeg, .gif, .bmp"
+                                AllowMultiple="false">
+                        @* Max file size: 100MB *@
+                        <UploaderAsyncSettings
+                            SaveUrl="@_saveFilesUrl"
+                            RemoveUrl="@_removeFilesUrl"
+                            RetryCount="3"
+                            RetryAfterDelay="3000">
+                        </UploaderAsyncSettings>
+                    </SfUploader>
+                </div>
+
+
+                <div class="flex flex-row justify-center mt-6">
+                    <div class="w-32">
+                        <button class="shadow bg-primary hover:bg-green-200 focus:shadow-outline focus:outline-none text-white hover:text-primary font-bold py-2 px-4 rounded" type="submit">
+                            <i class="fa fa-envelope mr-1"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </EditForm>
+
+
+            <div class="mb-10">
+                <br/>
+            </div>
+        }
+        else
+        {
+            <div class="mx-auto text-center text-gray-700 text-xl mb-10">Thank you for your feedback! <br/><br/><br/></div>
+        }
+
+    </div>
+</div>
+
+
+@code {
+
+    private FeedbackModel _feedback = new();
+    private bool _formSent = false;
+
+    private string _saveFilesUrl = "";
+    private string _removeFilesUrl = "";
+
+    private List<FileAttachment> _fileAttachments;
+
+    private Dictionary<string, object> _checkboxAttr = new Dictionary<string, object>()
+    {
+        {"class", "checkmark"}
+    };
+
+    protected override void OnInitialized()
+    {
+        _feedback.Guid = Guid.NewGuid();
+        _feedback.PermissionForPromoUse = true;
+        _saveFilesUrl = $"{Configuration["BaseApiUrl"]}fileupload/saveUploadedFiles/{_feedback.Guid}/FeedbackFilesContainer";
+        _removeFilesUrl = $"{Configuration["BaseApiUrl"]}fileupload/removeUploadedFile/{_feedback.Guid}/FeedbackFilesContainer";
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await Repository.SaveFeedBackForm(_feedback);
+            string originalFileName = "";
+            
+            var filesUploaded = await Repository.GetUploadedFilesAsync(_feedback.Guid);
+            if (filesUploaded != null && filesUploaded.Count > 0)
+            {
+                _fileAttachments = new List<FileAttachment>();
+                foreach (var f in filesUploaded)
+                {
+                    var bytes = await FileStorageService.DownloadAsync(f.BlobFileName, Configuration["FeedbackFilesContainer"]);
+                    _fileAttachments.Add(new FileAttachment
+                    {
+                        Bytes = bytes,
+                        Path = $"{Configuration["BlobUrlFeedbackFiles"]}{f.BlobFileName}",
+                        FileName = f.OriginalFileName,
+                        Mime = f.ContentType,
+                        Extension = System.IO.Path.GetExtension(f.OriginalFileName)
+                    });
+                }
+
+                originalFileName = filesUploaded?[0].OriginalFileName;
+            }
+
+            var email = new PostmarkEmailModel
+            {
+                ToEmailAddress = "dave@daveevans.tech,davewevans72@gmail.com",
+                FromEmailAddress = "info@daveevans.tech",
+                Subject = "Feedback form submission",
+                TextBody = $"{_feedback.Name} \n {_feedback.Company} \n {_feedback.Title} \n\n {_feedback.Message} \n\n {originalFileName} \n\n Permission: {_feedback.PermissionForPromoUse}"
+            };
+
+
+            await EmailSender.SendEmailPostmarkAsync(email, _fileAttachments);
+            AppToastService.ShowSuccessToast("Sent", "Feedback sent, thank you.");
+            _formSent = true;
+        }
+        catch (Exception ex)
+        {
+            AppToastService.ShowErrorToast("Oops!", "Something screwed up. That's embarrassing.");
+            Logger.LogError(ex.Message);
+        }
+    }
+
+    private void HandleInvalidSubmit()
+    {
+        AppToastService.ShowWarningToast("Incomplete Form", "The feedback form is incomplete.");
+    }
+}
+
+
+<style>
+        #DropArea {
+                   padding: 50px 25px;
+                   margin: 30px auto;
+                   border: 1px dashed #109248;
+                   text-align: center;
+                   width: 100%;
+                   display: inline-flex;
+                 } 
+                 
+           .e-checkbox-wrapper.e-primary:hover .e-frame.e-check { /* csslint allow: adjoining-classes */
+                background-color: #109248;
+            }
+</style>
