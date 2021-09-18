@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# ignore package.json so GitHub actions won't try to install Node
+DaveEvansTech/package.json
+DaveEvansTech/package-lock.json

@@ -1,0 +1,2 @@
+﻿Uncomment out Target Name="PostBuild" directive in the project file when developing. This instructs VS to call npm run buildcss
+which rebuilds the Tailwind CSS for optimization. But this may cause problems with GitHub action for CI/CD.
