@@ -15,7 +15,7 @@
         </div>
         <div class="w-full sm:w-1/2 p-6 self-center">
             <div class="flex justify-center items-end">
-                @SVG
+                @SVGCode
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@ else
     <div class="flex flex-wrap-reverse md:flex-wrap">
         <div class="w-full sm:w-1/2 p-6">
             <div class="flex justify-center items-end">
-                @SVG
+                @SVGCode
             </div>
         </div>
         <div class="w-5/6 sm:w-1/2 p-6">
@@ -56,6 +56,6 @@ else
     public RenderFragment Body { get; set; }
 
     [Parameter]
-    public RenderFragment SVG { get; set; }
+    public RenderFragment SVGCode { get; set; }
 
 }
