@@ -49,6 +49,7 @@
   <ItemGroup>
     <Folder Include="Pages\Shared\" />
     <Folder Include="wwwroot\demo-videos\" />
+    <Folder Include="wwwroot\portfolio-videos\" />
   </ItemGroup>
 
 </Project>
