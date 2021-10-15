@@ -59,30 +59,28 @@
         }
 
         <!-- Mobile menu -->
-        <ul class="@($"flex flex-col {menuVisibleClass} bg-primary mt-4 px-4 pb-4 text-white")">
-
-            
-
-            <li class="rounded hover:bg-green-500 mt-4 pl-1">
-                <NavLink class="relative block" href="home#services">
-                    Services
-                </NavLink>
-            </li>
-            @*<li class="rounded hover:bg-green-500 mt-3 pl-1">
-                <NavLink class="relative block" href="/brief">
-                    Request A Proposal
-                </NavLink>
-            </li>*@
-            <li class="rounded hover:bg-green-500 mt-3 pl-1">
-                <NavLink class="relative block" href="/portfolio">Portfolio</NavLink>
-            </li>
-            <li class="rounded hover:bg-green-500 mt-3 pl-1">
-                <NavLink class="relative block" href="https://www.honeybook.com/widget/dave_evans_llc_179184/cf_id/605f1c502b239101cd9d80e6">Contact</NavLink>
-            </li>
-            <li class="rounded hover:bg-green-500 mt-3 pl-1">
-                <NavLink class="relative block" href="https://daveevansllc.hbportal.co/app/">Client Portal</NavLink>
-            </li>
-        </ul>
+        <div class="@($"flex flex-col {menuVisibleClass} bg-primary mt-4 px-4 pb-4 text-white")">
+            <ul>
+                <li class="rounded hover:bg-green-500 mt-4 pl-1">
+                    <NavLink class="relative block" href="home#services">
+                        Services
+                    </NavLink>
+                </li>
+                <li class="rounded hover:bg-green-500 mt-3 pl-1">
+                    <NavLink class="relative block" href="/portfolio">Portfolio</NavLink>
+                </li>
+                <li class="rounded hover:bg-green-500 mt-3 pl-1">
+                    <NavLink target="_blank" class="relative block" href="https://www.honeybook.com/widget/dave_evans_llc_179184/cf_id/605f1c502b239101cd9d80e6">Contact</NavLink>
+                </li>
+                <li class="rounded hover:bg-green-500 mt-3 pl-1">
+                    <NavLink target="_blank" class="relative block" href="https://daveevansllc.hbportal.co/schedule/61696aa24cd914002c3b963e">Schedule Consultation</NavLink>
+                </li>
+                <li class="rounded hover:bg-green-500 mt-3 pl-1">
+                    <NavLink target="_blank" class="relative block" href="https://daveevansllc.hbportal.co/app/">Client Portal</NavLink>
+                </li>
+            </ul>
+        </div>
+    
         <!-- / Mobile menu -->
         <!-- Desktop menu -->
         <ul class="hidden md:flex h-full">
@@ -95,7 +93,7 @@
                         <div class="w-full text-white mb-8">
                             <h2 class="font-bold text-2xl">My Services</h2>
                             <p>
-                                Affordable web, mobile, and OTT (Roku, Fire TV, Android TV, etc.) app development for small bussinesses, non-profit organizations, and individuals.                                
+                                Affordable web, mobile, and OTT (Roku, Fire TV, Android TV, etc.) app development for small bussinesses, non-profit organizations, and individuals.
                             </p>
                         </div>
                         <div class="px-4 w-full sm:w-1/2 lg:w-1/4 border-gray-600 border-b sm:border-r lg:border-b-0 pb-6 pt-6 lg:pt-3">
@@ -111,7 +109,7 @@
                                 <h3 class="font-bold text-xl text-white text-bold mb-2">OTT Channels (Roku, Fire TV, Android TV, etc.)</h3>
                             </div>
                             <p class="text-gray-100 text-sm">
-                                I develop OTT (Over-the-Top) applications that provide rich, intuitive user experiences for viewers across multiple platforms like Roku, Fire TV, and Android TV.  
+                                I develop OTT (Over-the-Top) applications that provide rich, intuitive user experiences for viewers across multiple platforms like Roku, Fire TV, and Android TV.
                                 If you're a video content creator, I can help you expand your audience and monitization options.
                             </p>
                             <div class="flex items-center py-3">
@@ -194,37 +192,41 @@
                 </div>
             </li>
 
-            <!-- ## Hoverable Link Template ##
+        <!-- ## Hoverable Link Template ##
 
-            <li class="hoverable hover:bg-blue-800 hover:text-white"><a href="#" class="relative block">x</a><div class="mega-menu">
-                Add your mega menu content
-            </div></li>
+    <li class="hoverable hover:bg-blue-800 hover:text-white"><a href="#" class="relative block">x</a><div class="mega-menu">
+        Add your mega menu content
+    </div></li>
 
-            -->
-            <!--Nav Links-->
-            @*<li class="hover:bg-primary hover:text-white pt-2">
-                <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="/brief">
-                    <span class="hidden xl:block">Request A Proposal</span>
-                    <span class="xl:hidden">Proposal</span>
-                </NavLink>
-            </li>*@
+    -->
+        <!--Nav Links-->
+        @*<li class="hover:bg-primary hover:text-white pt-2">
+            <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="/brief">
+                <span class="hidden xl:block">Request A Proposal</span>
+                <span class="xl:hidden">Proposal</span>
+            </NavLink>
+        </li>*@
 
-            <li class="hover:bg-primary hover:text-white pt-2">
-                <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="/portfolio">Portfolio</NavLink>
-            </li>
+        <li class="hover:bg-primary hover:text-white pt-2">
+            <NavLink class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="/portfolio">Portfolio</NavLink>
+        </li>
 
-            <li class="hover:bg-primary hover:text-white pt-2">
-                <a target="_blank" class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="https://www.honeybook.com/widget/dave_evans_llc_179184/cf_id/605f1c502b239101cd9d80e6">Contact</a>
-            </li>
+        <li class="hover:bg-primary hover:text-white pt-2">
+            <NavLink target="_blank" class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="https://www.honeybook.com/widget/dave_evans_llc_179184/cf_id/605f1c502b239101cd9d80e6">Contact</NavLink>
+        </li>
 
-            <li class="hover:bg-primary hover:text-white pt-2">
-                <a target="_blank" class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="https://daveevansllc.hbportal.co/app/">Client Portal</a>
-            </li>
+        <li class="hover:bg-primary hover:text-white pt-2">
+            <NavLink target="_blank" class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="https://daveevansllc.hbportal.co/schedule/61696aa24cd914002c3b963e">Schedule Consultation</NavLink>
+        </li>
+
+        <li class="hover:bg-primary hover:text-white pt-2">
+            <NavLink target="_blank" class="relative block py-6 px-2 lg:p-6 text-sm lg:text-base font-bold" href="https://daveevansllc.hbportal.co/app/">Client Portal</NavLink>
+        </li>
 
 
-            @*<LoginDisplay />*@
+        @*<LoginDisplay />*@
 
-        </ul>
+    </ul>
         <!-- / Desktop menu -->
 
     </div>

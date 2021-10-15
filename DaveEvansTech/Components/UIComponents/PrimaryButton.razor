@@ -1,16 +1,17 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <div class="rounded-md shadow">
     <button type="button"
             @onclick="OnClickHandler"
             class=@($"{Width} flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-green-100 hover:text-primary md:py-4 md:text-lg md:px-10 shadow-md")>
-        @ChildContent 
+         <i class="fa fa-calendar-alt mr-2"></i> @ChildContent
     </button>
 </div>
 
 @code {
     [Parameter]
-    public RenderFragment ChildContent  { get; set; }
+    public RenderFragment ChildContent { get; set; }
 
     [Parameter]
     public string Path { get; set; } = "/";
@@ -19,10 +20,13 @@
     public string Width { get; set; } = "w-full";
 
 
-    private void OnClickHandler()
+    private async Task OnClickHandler()
     {
         if (!string.IsNullOrWhiteSpace(Path))
-            NavigationManager.NavigateTo(Path);
+        {
+            //NavigationManager.NavigateTo(Path);
+            await JSRuntime.InvokeAsync<object>("open", Path, "_blank");
+        }
     }
 
 }
