@@ -1,11 +1,14 @@
-﻿@inject NavigationManager NavigationManager
+﻿
+@namespace DaveEvansTech.Components.UIComponents
+
+@inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
 <div class="rounded-md shadow">
     <button type="button"
             @onclick="OnClickHandler"
             class=@($"{Width} flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-green-100 hover:text-primary md:py-4 md:text-lg md:px-10 shadow-md")>
-         <i class="fa fa-calendar-alt mr-2"></i> @ChildContent
+        <i class="fa fa-calendar-alt mr-2"></i> @ChildContent
     </button>
 </div>
 
