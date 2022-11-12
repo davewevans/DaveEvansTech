@@ -100,22 +100,5 @@ namespace DaveEvansTech.Helpers
             };
             await SendEmailPostmarkAsync(email);
         }
-        
-
-        // Used by identity to send emails
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
-        {
-            var emailModel = new PostmarkEmailModel
-            {
-                FromEmailAddress = _configuration["FromEmail"],
-                ToEmailAddress = email,
-                Subject = subject,
-                HtmlBody = htmlMessage,
-                Tag = "Identity",
-                Headers = null
-            };
-
-            await SendEmailPostmarkAsync(emailModel);
-        }
     }
 }
