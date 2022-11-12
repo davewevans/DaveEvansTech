@@ -3,7 +3,7 @@
 		<Exec Command="npm run buildcss" />
 	</Target>-->	
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>0bc6018d-f33d-4fe2-8df1-d12606e9f8c8</UserSecretsId>
   </PropertyGroup>	
   <ItemGroup>
@@ -36,15 +36,15 @@
     <PackageReference Include="LoremNET" Version="2.0.0" />
     <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="Markdig" Version="0.26.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.9" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.11" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Postmark" Version="4.5.2" />
     <PackageReference Include="Select.HtmlToPdf.NetCore" Version="21.1.0" />
     <PackageReference Include="Syncfusion.Blazor" Version="19.2.0.62" />
     <PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="19.2.0.55" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
   </ItemGroup>  
   <ItemGroup>
     <Folder Include="Pages\Shared\" />
